@@ -73,7 +73,7 @@ export default function ImageTab() {
               <div>
                 <p className="text-lg font-semibold mb-2">Image Uploaded</p>
                 <p className="text-sm text-gray-400">
-                  This will appear as a circular badge on the right ear cup
+                  This will appear as a circular badge on both ear cups
                 </p>
               </div>
             </div>

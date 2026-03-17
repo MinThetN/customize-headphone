@@ -57,23 +57,42 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
               <circle cx="420" cy="360" r="85" fill="url(#cupShade)" />
             </g>
             {customization.customImage && (
-              <foreignObject x="360" y="300" width="120" height="120">
-                <div
-                  style={{
-                    width: '105px',
-                    height: '105px',
-                    borderRadius: '9999px',
-                    overflow: 'hidden',
-                    border: '4px solid rgba(212,175,55,0.5)',
-                  }}
-                >
-                  <img
-                    src={customization.customImage}
-                    alt=""
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              </foreignObject>
+              <>
+                <foreignObject x="120" y="300" width="120" height="120">
+                  <div
+                    style={{
+                      width: '105px',
+                      height: '105px',
+                      borderRadius: '9999px',
+                      overflow: 'hidden',
+                      border: '4px solid rgba(212,175,55,0.5)',
+                    }}
+                  >
+                    <img
+                      src={customization.customImage}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                </foreignObject>
+                <foreignObject x="360" y="300" width="120" height="120">
+                  <div
+                    style={{
+                      width: '105px',
+                      height: '105px',
+                      borderRadius: '9999px',
+                      overflow: 'hidden',
+                      border: '4px solid rgba(212,175,55,0.5)',
+                    }}
+                  >
+                    <img
+                      src={customization.customImage}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                </foreignObject>
+              </>
             )}
             {customization.stickers.length > 0 && (
               <g>
@@ -132,6 +151,25 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
             </g>
             {customization.customImage && angle === 'right' && (
               <foreignObject x="300" y="320" width="120" height="120">
+                <div
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '9999px',
+                    overflow: 'hidden',
+                    border: '4px solid rgba(212,175,55,0.5)',
+                  }}
+                >
+                  <img
+                    src={customization.customImage}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+              </foreignObject>
+            )}
+            {customization.customImage && angle === 'left' && (
+              <foreignObject x="210" y="320" width="120" height="120">
                 <div
                   style={{
                     width: '100px',
