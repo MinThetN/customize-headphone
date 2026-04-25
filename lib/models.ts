@@ -9,24 +9,28 @@ export interface HeadphoneModel {
 export const headphoneModels: HeadphoneModel[] = [
   {
     id: 'arc-studio',
-    name: 'Arc Studio',
-    tagline: 'Precision sound for the modern creator',
-    price: 199,
-    baseColors: ['#1a1a1a', '#2a4858', '#8b4513'],
+    name: 'Base Model',
+    tagline: 'Customisable wireless headphones',
+    price: 29,
+    baseColors: ['#111827', '#1f2937', '#4b5563', '#9ca3af', '#f9fafb'],
   },
   {
     id: 'nova-pro',
-    name: 'Nova Pro',
-    tagline: 'Premium wireless audio excellence',
-    price: 249,
-    baseColors: ['#0a0a0a', '#4a4a4a', '#d4af37'],
-  },
-  {
-    id: 'pulse-x',
-    name: 'Pulse X',
-    tagline: 'Dynamic bass for active lifestyles',
-    price: 179,
-    baseColors: ['#000000', '#c41e3a', '#00539f'],
+    name: 'Premium Model',
+    tagline: 'Customisable wireless headphones with gift-ready packaging',
+    price: 59,
+    baseColors: [
+      '#020617',
+      '#111827',
+      '#1e293b',
+      '#334155',
+      '#475569',
+      '#0f766e',
+      '#0369a1',
+      '#6d28d9',
+      '#be123c',
+      '#d97706',
+    ],
   },
 ];
 

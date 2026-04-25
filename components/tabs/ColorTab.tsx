@@ -1,12 +1,14 @@
 'use client';
 
 import { useCustomization } from '@/contexts/CustomizationContext';
-import { COLOR_SWATCHES } from '@/lib/types';
+import { getModelById } from '@/lib/models';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 
 export default function ColorTab() {
   const { customization, updateColors } = useCustomization();
+  const availableColors =
+    getModelById(customization.modelId)?.baseColors ?? [];
 
   return (
     <div className="space-y-6">
@@ -14,16 +16,19 @@ export default function ColorTab() {
         title="Shell"
         currentColor={customization.colors.shell}
         onChange={(color) => updateColors({ shell: color })}
+        colors={availableColors}
       />
       <ColorSection
         title="Band"
         currentColor={customization.colors.band}
         onChange={(color) => updateColors({ band: color })}
+        colors={availableColors}
       />
       <ColorSection
         title="Ear Cups"
         currentColor={customization.colors.earCups}
         onChange={(color) => updateColors({ earCups: color })}
+        colors={availableColors}
       />
     </div>
   );
@@ -33,10 +38,12 @@ function ColorSection({
   title,
   currentColor,
   onChange,
+  colors,
 }: {
   title: string;
   currentColor: string;
   onChange: (color: string) => void;
+  colors: string[];
 }) {
   return (
     <div>
@@ -49,7 +56,7 @@ function ColorSection({
       </div>
 
       <div className="grid grid-cols-8 gap-2 mb-3">
-        {COLOR_SWATCHES.map((color) => (
+        {colors.map((color) => (
           <motion.button
             key={color}
             whileHover={{ scale: 1.1 }}
@@ -68,16 +75,6 @@ function ColorSection({
             )}
           </motion.button>
         ))}
-      </div>
-
-      <div className="flex items-center gap-3">
-        <label className="text-sm text-gray-400">Custom:</label>
-        <input
-          type="color"
-          value={currentColor}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-14 h-9 rounded-md cursor-pointer bg-transparent border"
-        />
       </div>
     </div>
   );

@@ -7,6 +7,14 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import { useCart } from '@/hooks/useCart';
 
+const gbpFormatter = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  maximumFractionDigits: 0,
+});
+
+const formatGBP = (price: number) => gbpFormatter.format(price);
+
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, totalPrice, isLoaded } = useCart();
   const [showTooltip, setShowTooltip] = useState(false);
@@ -73,7 +81,7 @@ export default function CartPage() {
                     <div className="space-y-4 mb-6">
                       <div className="flex justify-between text-gray-400">
                         <span>Subtotal</span>
-                        <span>${totalPrice}</span>
+                        <span>{formatGBP(totalPrice)}</span>
                       </div>
                       <div className="flex justify-between text-gray-400">
                         <span>Shipping</span>
@@ -81,7 +89,7 @@ export default function CartPage() {
                       </div>
                       <div className="border-t border pt-4 flex justify-between text-xl font-bold">
                         <span>Total</span>
-                        <span className="text-gold">${totalPrice}</span>
+                        <span className="text-gold">{formatGBP(totalPrice)}</span>
                       </div>
                     </div>
 
@@ -145,7 +153,9 @@ function CartItemCard({
               <h3 className="text-xl font-playfair font-bold">{item.modelName}</h3>
               <p className="text-sm text-gray-400">Custom Build</p>
             </div>
-            <p className="text-xl font-bold text-gold">${item.modelPrice}</p>
+            <p className="text-xl font-bold text-gold">
+              {formatGBP(item.modelPrice)}
+            </p>
           </div>
 
           <div className="space-y-2 mb-4">
