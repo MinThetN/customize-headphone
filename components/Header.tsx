@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Headphones, Sun, Moon } from 'lucide-react';
+import { ShoppingCart, Headphones, Sun, Moon, User } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useTheme } from 'next-themes';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
   const { totalItems } = useCart();
   const { theme, setTheme } = useTheme();
+  const { user, logout } = useAuth();
   const isDark = theme === 'dark';
 
   return (
@@ -16,17 +18,48 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 group">
           <Headphones className="w-6 h-6 text-gold" />
           <span className="text-2xl font-playfair font-bold tracking-tight group-hover:text-gold transition-colors">
-            SONIC
+            BPHONES
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-4 md:gap-6">
+          <Link href="/" className="text-sm tracking-wide hover:text-gold transition-colors">
+            HOME
+          </Link>
+          <Link href="/about" className="text-sm tracking-wide hover:text-gold transition-colors">
+            ABOUT US
+          </Link>
+          <Link href="/policy" className="text-sm tracking-wide hover:text-gold transition-colors">
+            POLICY
+          </Link>
+          <Link href="/shipping" className="text-sm tracking-wide hover:text-gold transition-colors">
+            SHIPPING
+          </Link>
           <Link
             href="/customize"
             className="text-sm tracking-wide hover:text-gold transition-colors"
           >
             CUSTOMIZE
           </Link>
+          <Link href="/orders" className="text-sm tracking-wide hover:text-gold transition-colors">
+            MY ITEMS
+          </Link>
+          {user ? (
+            <button
+              onClick={logout}
+              className="text-xs md:text-sm border rounded-full px-3 py-1 hover:border-gold hover:text-gold transition-colors"
+            >
+              LOGOUT
+            </button>
+          ) : (
+            <Link
+              href="/auth"
+              className="inline-flex items-center gap-1 text-xs md:text-sm border rounded-full px-3 py-1 hover:border-gold hover:text-gold transition-colors"
+            >
+              <User className="w-3 h-3" />
+              LOGIN
+            </Link>
+          )}
           <button
             aria-label="Toggle theme"
             onClick={() => setTheme(isDark ? 'light' : 'dark')}

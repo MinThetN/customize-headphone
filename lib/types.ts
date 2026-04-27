@@ -23,6 +23,33 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  provider: 'local' | 'google';
+}
+
+export interface Address {
+  fullName: string;
+  phone: string;
+  line1: string;
+  city: string;
+  postcode: string;
+  country: string;
+}
+
+export interface Order {
+  id: string;
+  userEmail: string;
+  items: CartItem[];
+  total: number;
+  paymentMethod: 'credit-card' | 'debit-card';
+  shippingStatus: 'Processing' | 'Packed' | 'Shipped' | 'Delivered';
+  address: Address;
+  createdAt: string;
+}
+
 export const AVAILABLE_STICKERS = [
   '🎵', '🎸', '🎹', '🎧', '🎤', '🎼',
   '⚡', '🔥', '💎', '⭐', '🌙', '☀️',

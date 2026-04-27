@@ -15,6 +15,11 @@ const gbpFormatter = new Intl.NumberFormat('en-GB', {
 
 const formatGBP = (price: number) => gbpFormatter.format(price);
 
+const modelImages: Record<string, string> = {
+  'arc-studio': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
+  'nova-pro': 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80',
+};
+
 export default function CustomizePage() {
   const baseModel =
     headphoneModels.find((model) => model.id === 'arc-studio') ??
@@ -79,6 +84,9 @@ export default function CustomizePage() {
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Pick a base model, premium model, or bundle to begin your customization journey
             </p>
+            <p className="mt-3 text-sm text-gold/90 font-medium">
+              Student discount 10% applies to all headphones.
+            </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -94,6 +102,8 @@ export default function CustomizePage() {
                 displayName="Base model"
                 description="Customisable wireless headphones"
                 price={29}
+                imageSrc={modelImages[baseModel.id]}
+                showColorShowcase
               />
             </motion.div>
 
@@ -110,7 +120,8 @@ export default function CustomizePage() {
                 description="Customisable wireless headphones"
                 extraNote="Gift-ready packaging options"
                 price={59}
-                badge="Student discount 10%"
+                imageSrc={modelImages[premiumModel.id]}
+                showColorShowcase={false}
               />
             </motion.div>
 
@@ -141,7 +152,8 @@ function ModelCard({
   description,
   extraNote,
   price,
-  badge,
+  imageSrc,
+  showColorShowcase = true,
 }: {
   model: (typeof headphoneModels)[number];
   label: string;
@@ -150,7 +162,8 @@ function ModelCard({
   description: string;
   extraNote?: string;
   price: number;
-  badge?: string;
+  imageSrc?: string;
+  showColorShowcase?: boolean;
 }) {
   return (
     <Link href={`/customize/${model.id}`}>
@@ -161,22 +174,16 @@ function ModelCard({
           <p className="text-sm uppercase tracking-[0.2em] text-gold/80 mb-6">
             {label}
           </p>
-          {badge ? (
-            <p className="inline-flex rounded-full bg-gold/15 border border-gold/40 px-3 py-1 text-xs font-semibold text-gold mb-4">
-              {badge}
-            </p>
-          ) : null}
           <div className="mb-6 flex justify-center">
-            <div className="w-48 h-48 relative flex items-center justify-center">
-              <div
-                className="w-32 h-32 rounded-full"
-                style={{ backgroundColor: model.baseColors[0] }}
+            {imageSrc ? (
+              <img
+                src={imageSrc}
+                alt={displayName}
+                className="w-48 h-48 rounded-2xl object-cover border border-white/10"
               />
-              <div
-                className="absolute top-0 w-24 h-8 rounded-full blur-sm"
-                style={{ backgroundColor: model.baseColors[0] }}
-              />
-            </div>
+            ) : (
+              <div className="w-48 h-48 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900" />
+            )}
           </div>
 
           <h2 className="text-2xl font-playfair font-bold mb-2">{displayName}</h2>
@@ -189,15 +196,17 @@ function ModelCard({
             <span className="text-3xl font-bold text-gold">
               {formatGBP(price)}
             </span>
-            <div className="flex gap-2">
-              {model.baseColors.map((color, i) => (
-                <div
-                  key={i}
-                  className="w-6 h-6 rounded-full border-2 border"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
+            {showColorShowcase ? (
+              <div className="flex gap-2">
+                {model.baseColors.map((color, i) => (
+                  <div
+                    key={i}
+                    className="w-6 h-6 rounded-full border-2 border"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+            ) : <div /> }
           </div>
 
           <div className="flex items-center gap-2 text-sm text-gold group-hover:gap-3 transition-all">

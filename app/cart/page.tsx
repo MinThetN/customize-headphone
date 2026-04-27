@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trash2, Plus, Minus, ShoppingBag, Info } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { useCart } from '@/hooks/useCart';
@@ -17,7 +16,6 @@ const formatGBP = (price: number) => gbpFormatter.format(price);
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, totalPrice, isLoaded } = useCart();
-  const [showTooltip, setShowTooltip] = useState(false);
 
   if (!isLoaded) {
     return (
@@ -93,22 +91,12 @@ export default function CartPage() {
                       </div>
                     </div>
 
-                    <div className="relative">
-                      <button
-                        disabled
-                        onMouseEnter={() => setShowTooltip(true)}
-                        onMouseLeave={() => setShowTooltip(false)}
-                        className="w-full bg-gold/30 text-gray-500 px-6 py-4 rounded-xl font-bold text-lg cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        <Info className="w-5 h-5" />
-                        Checkout
-                      </button>
-                      {showTooltip && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-background border border-gold/30 rounded-lg px-4 py-2 text-sm whitespace-nowrap">
-                          Backend coming soon
-                        </div>
-                      )}
-                    </div>
+                    <Link
+                      href="/checkout"
+                      className="w-full bg-gold text-dark px-6 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 hover:bg-gold/90 transition-colors"
+                    >
+                      Checkout
+                    </Link>
 
                     <p className="text-xs text-gray-500 text-center mt-4">
                       Secure checkout powered by SONIC
