@@ -7,6 +7,9 @@ interface CustomizationContextType {
   customization: CustomizationState;
   updateColors: (colors: Partial<CustomizationState['colors']>) => void;
   toggleSticker: (sticker: string) => void;
+  toggleAddOn: (addOn: string) => void;
+  updatePattern: (pattern: CustomizationState['pattern']) => void;
+  updateEarpieceStyle: (style: CustomizationState['earpieceStyle']) => void;
   updateText: (text: Partial<CustomizationState['text']>) => void;
   updateCustomImage: (image: string | null) => void;
   resetCustomization: (modelId: string, baseColor: string) => void;
@@ -37,6 +40,9 @@ export function CustomizationProvider({
       color: '#f5a623',
     },
     customImage: null,
+    addOns: [],
+    pattern: 'solid',
+    earpieceStyle: 'standard',
   });
 
   const updateColors = (colors: Partial<CustomizationState['colors']>) => {
@@ -78,6 +84,32 @@ export function CustomizationProvider({
     }));
   };
 
+  const toggleAddOn = (addOn: string) => {
+    setCustomization((prev) => {
+      const exists = prev.addOns.includes(addOn);
+      return {
+        ...prev,
+        addOns: exists
+          ? prev.addOns.filter((item) => item !== addOn)
+          : [...prev.addOns, addOn],
+      };
+    });
+  };
+
+  const updatePattern = (pattern: CustomizationState['pattern']) => {
+    setCustomization((prev) => ({
+      ...prev,
+      pattern,
+    }));
+  };
+
+  const updateEarpieceStyle = (earpieceStyle: CustomizationState['earpieceStyle']) => {
+    setCustomization((prev) => ({
+      ...prev,
+      earpieceStyle,
+    }));
+  };
+
   const resetCustomization = (modelId: string, baseColor: string) => {
     setCustomization({
       modelId,
@@ -93,6 +125,9 @@ export function CustomizationProvider({
         color: '#f5a623',
       },
       customImage: null,
+      addOns: [],
+      pattern: 'solid',
+      earpieceStyle: 'standard',
     });
   };
 
@@ -102,6 +137,9 @@ export function CustomizationProvider({
         customization,
         updateColors,
         toggleSticker,
+        toggleAddOn,
+        updatePattern,
+        updateEarpieceStyle,
         updateText,
         updateCustomImage,
         resetCustomization,

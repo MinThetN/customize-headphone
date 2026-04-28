@@ -7,6 +7,14 @@ type Angle = 'front' | 'left' | 'right';
 
 export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle }) {
   const { customization } = useCustomization();
+  const patternOpacity =
+    customization.pattern === 'solid'
+      ? 0
+      : customization.pattern === 'carbon'
+        ? 0.2
+        : customization.pattern === 'wave'
+          ? 0.26
+          : 0.3;
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -23,6 +31,12 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
             <stop offset="0%" stopOpacity="0.25" />
             <stop offset="100%" stopOpacity="0" />
           </radialGradient>
+          <pattern id="wavePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M0 10 Q5 0 10 10 T20 10" stroke="white" strokeWidth="1.5" fill="none" />
+          </pattern>
+          <pattern id="gridPattern" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M10 0 L0 0 0 10" stroke="white" strokeWidth="1" fill="none" />
+          </pattern>
         </defs>
 
         {angle === 'front' && (
@@ -50,11 +64,34 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
               <circle cx="180" cy="360" r="85" fill={customization.colors.earCups} />
               <circle cx="180" cy="360" r="60" fill="#0b0b0b" />
               <circle cx="180" cy="360" r="85" fill="url(#cupShade)" />
+              {customization.pattern !== 'solid' && (
+                <circle
+                  cx="180"
+                  cy="360"
+                  r="80"
+                  fill={customization.pattern === 'geometric' ? 'url(#gridPattern)' : 'url(#wavePattern)'}
+                  opacity={patternOpacity}
+                />
+              )}
             </g>
             <g>
               <circle cx="420" cy="360" r="85" fill={customization.colors.earCups} />
-              <circle cx="420" cy="360" r="60" fill="#0b0b0b" />
+              <circle
+                cx="420"
+                cy="360"
+                r={customization.earpieceStyle === 'sport' ? 54 : customization.earpieceStyle === 'comfort' ? 66 : 60}
+                fill="#0b0b0b"
+              />
               <circle cx="420" cy="360" r="85" fill="url(#cupShade)" />
+              {customization.pattern !== 'solid' && (
+                <circle
+                  cx="420"
+                  cy="360"
+                  r="80"
+                  fill={customization.pattern === 'geometric' ? 'url(#gridPattern)' : 'url(#wavePattern)'}
+                  opacity={patternOpacity}
+                />
+              )}
             </g>
             {customization.customImage && (
               <>
@@ -139,13 +176,23 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
                 <>
                   <rect x="210" y="200" width="20" height="150" rx="8" fill={customization.colors.shell} />
                   <circle cx="260" cy="370" r="90" fill={customization.colors.earCups} />
-                  <circle cx="260" cy="370" r="65" fill="#0b0b0b" />
+                  <circle
+                    cx="260"
+                    cy="370"
+                    r={customization.earpieceStyle === 'sport' ? 58 : customization.earpieceStyle === 'comfort' ? 70 : 65}
+                    fill="#0b0b0b"
+                  />
                 </>
               ) : (
                 <>
                   <rect x="370" y="200" width="20" height="150" rx="8" fill={customization.colors.shell} />
                   <circle cx="340" cy="370" r="90" fill={customization.colors.earCups} />
-                  <circle cx="340" cy="370" r="65" fill="#0b0b0b" />
+                  <circle
+                    cx="340"
+                    cy="370"
+                    r={customization.earpieceStyle === 'sport' ? 58 : customization.earpieceStyle === 'comfort' ? 70 : 65}
+                    fill="#0b0b0b"
+                  />
                 </>
               )}
             </g>

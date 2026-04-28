@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Headphones, Sun, Moon, User } from 'lucide-react';
+import { ShoppingCart, Headphones, Sun, Moon, User, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useTheme } from 'next-themes';
 import { useAuth } from '@/hooks/useAuth';
@@ -44,6 +44,9 @@ export default function Header() {
           <Link href="/orders" className="text-sm tracking-wide hover:text-gold transition-colors">
             MY ITEMS
           </Link>
+          <Link href="/wishlist" className="text-sm tracking-wide hover:text-gold transition-colors">
+            WISHLIST
+          </Link>
           {user ? (
             <button
               onClick={logout}
@@ -76,6 +79,9 @@ export default function Header() {
                 {totalItems}
               </span>
             )}
+          </Link>
+          <Link href="/wishlist" className="relative group md:hidden">
+            <Heart className="w-5 h-5 group-hover:text-gold transition-colors" />
           </Link>
         </nav>
       </div>

@@ -11,14 +11,14 @@ export const headphoneModels: HeadphoneModel[] = [
     id: 'arc-studio',
     name: 'Base Model',
     tagline: 'Customisable wireless headphones',
-    price: 29,
+    price: 129,
     baseColors: ['#111827', '#1f2937', '#4b5563', '#9ca3af', '#f9fafb'],
   },
   {
     id: 'nova-pro',
     name: 'Premium Model',
-    tagline: 'Customisable wireless headphones with gift-ready packaging',
-    price: 59,
+    tagline: 'Premium headphones with after-sales and repair service options',
+    price: 159,
     baseColors: [
       '#020617',
       '#111827',

@@ -173,11 +173,27 @@ function CartItemCard({
                 </span>
               </div>
             )}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400">Pattern:</span>
+              <span className="text-sm capitalize">{item.customization.pattern ?? 'solid'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400">Earpiece:</span>
+              <span className="text-sm capitalize">
+                {item.customization.earpieceStyle ?? 'standard'}
+              </span>
+            </div>
 
             {item.customization.text.content && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-400">Text:</span>
                 <span className="text-sm">{item.customization.text.content}</span>
+              </div>
+            )}
+            {item.customization.addOns?.length > 0 && (
+              <div className="flex items-start gap-2">
+                <span className="text-sm text-gray-400">Add-ons:</span>
+                <span className="text-sm">{item.customization.addOns.join(', ')}</span>
               </div>
             )}
           </div>

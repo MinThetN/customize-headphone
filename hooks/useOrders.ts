@@ -65,7 +65,14 @@ export function useOrders(userEmail?: string) {
   const placeOrder = (
     items: CartItem[],
     total: number,
-    paymentMethod: 'credit-card' | 'debit-card'
+    paymentMethod: 'credit-card' | 'debit-card',
+    checkoutDetails?: {
+      studentDiscountApplied: boolean;
+      giftPackaging: boolean;
+      subtotal: number;
+      discountAmount: number;
+      giftPackagingFee: number;
+    }
   ) => {
     if (!userEmail) return null;
     const nextOrder: Order = {
@@ -74,6 +81,11 @@ export function useOrders(userEmail?: string) {
       items,
       total,
       paymentMethod,
+      studentDiscountApplied: checkoutDetails?.studentDiscountApplied ?? false,
+      giftPackaging: checkoutDetails?.giftPackaging ?? false,
+      subtotal: checkoutDetails?.subtotal ?? total,
+      discountAmount: checkoutDetails?.discountAmount ?? 0,
+      giftPackagingFee: checkoutDetails?.giftPackagingFee ?? 0,
       shippingStatus: 'Processing',
       address,
       createdAt: new Date().toISOString(),

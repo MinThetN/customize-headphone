@@ -64,11 +64,23 @@ export default function OrdersPage() {
                         <p className="text-lg font-bold text-gold">{formatGBP(order.total)}</p>
                       </div>
                     </div>
+                    <div className="text-xs text-gray-400 mb-3">
+                      <p>Subtotal: {formatGBP(order.subtotal ?? order.total)}</p>
+                      <p>Student discount: -{formatGBP(order.discountAmount ?? 0)}</p>
+                      <p>Gift packaging: {order.giftPackaging ? 'Yes' : 'No'}</p>
+                    </div>
                     <div className="space-y-1 text-sm">
                       {order.items.map((item) => (
-                        <p key={item.id}>
-                          {item.modelName} x {item.quantity}
-                        </p>
+                        <div key={item.id}>
+                          <p>
+                            {item.modelName} x {item.quantity}
+                          </p>
+                          {item.customization.addOns?.length > 0 ? (
+                            <p className="text-xs text-gray-400">
+                              Add-ons: {item.customization.addOns.join(', ')}
+                            </p>
+                          ) : null}
+                        </div>
                       ))}
                     </div>
                   </article>

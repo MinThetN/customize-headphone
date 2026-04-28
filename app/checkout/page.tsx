@@ -27,6 +27,13 @@ export default function CheckoutPage() {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
+  const [studentCode, setStudentCode] = useState('');
+  const [studentDiscountApplied, setStudentDiscountApplied] = useState(false);
+  const [giftPackaging, setGiftPackaging] = useState(false);
+
+  const discountAmount = studentDiscountApplied ? totalPrice * 0.1 : 0;
+  const giftPackagingFee = giftPackaging ? 5 : 0;
+  const finalTotal = Math.max(totalPrice - discountAmount + giftPackagingFee, 0);
 
   useEffect(() => {
     if (!authLoaded) return;
@@ -48,7 +55,13 @@ export default function CheckoutPage() {
     if (!cardName || !cardNumber || !expiry || !cvv) {
       return;
     }
-    const order = placeOrder(cart, totalPrice, paymentMethod);
+    const order = placeOrder(cart, finalTotal, paymentMethod, {
+      studentDiscountApplied,
+      giftPackaging,
+      subtotal: totalPrice,
+      discountAmount,
+      giftPackagingFee,
+    });
     if (order) {
       clearCart();
       router.push('/orders');
@@ -117,6 +130,29 @@ export default function CheckoutPage() {
                   onChange={(e) => setCvv(e.target.value)}
                 />
               </div>
+              <div className="mt-4 rounded-xl border p-3">
+                <p className="text-sm font-semibold mb-2">Student Discount (10% off)</p>
+                <div className="flex gap-2">
+                  <input
+                    className="flex-1 rounded-xl border bg-background px-4 py-3"
+                    placeholder="Enter code (STUDENT10)"
+                    value={studentCode}
+                    onChange={(e) => setStudentCode(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setStudentDiscountApplied(studentCode.trim().toUpperCase() === 'STUDENT10')
+                    }
+                    className="rounded-xl bg-gold text-dark px-4 py-3 font-semibold hover:bg-gold/90 transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+                {studentDiscountApplied ? (
+                  <p className="text-xs text-green-500 mt-2">Student discount applied.</p>
+                ) : null}
+              </div>
             </section>
 
             <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
@@ -159,6 +195,25 @@ export default function CheckoutPage() {
                   onChange={(e) => saveAddress({ ...address, country: e.target.value })}
                 />
               </div>
+              <label className="mt-4 flex items-center justify-between rounded-xl border px-4 py-3 cursor-pointer">
+                <span className="text-sm">
+                  Gift-ready packaging option (+{formatGBP(5)})
+                </span>
+                <input
+                  type="checkbox"
+                  checked={giftPackaging}
+                  onChange={(e) => setGiftPackaging(e.target.checked)}
+                  className="accent-cyan-500"
+                />
+              </label>
+            </section>
+
+            <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+              <h2 className="text-xl font-bold mb-2">Returns Policy</h2>
+              <p className="text-sm text-gray-400">
+                Clear returns policy: approved refunds are processed within 2 business days
+                after return inspection.
+              </p>
             </section>
 
             <button
@@ -173,17 +228,36 @@ export default function CheckoutPage() {
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
             <div className="space-y-3 mb-4">
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center justify-between text-sm">
-                  <span>
-                    {item.modelName} x {item.quantity}
-                  </span>
-                  <span>{formatGBP(item.modelPrice * item.quantity)}</span>
+                <div key={item.id} className="text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>
+                      {item.modelName} x {item.quantity}
+                    </span>
+                    <span>{formatGBP(item.modelPrice * item.quantity)}</span>
+                  </div>
+                  {item.customization.addOns?.length > 0 ? (
+                    <p className="text-xs text-gray-400 mt-1">
+                      Add-ons: {item.customization.addOns.join(', ')}
+                    </p>
+                  ) : null}
                 </div>
               ))}
             </div>
             <div className="border-t pt-4 flex items-center justify-between font-bold">
+              <span>Subtotal</span>
+              <span>{formatGBP(totalPrice)}</span>
+            </div>
+            <div className="pt-2 flex items-center justify-between text-sm">
+              <span>Student Discount</span>
+              <span>-{formatGBP(discountAmount)}</span>
+            </div>
+            <div className="pt-2 flex items-center justify-between text-sm">
+              <span>Gift Packaging</span>
+              <span>{formatGBP(giftPackagingFee)}</span>
+            </div>
+            <div className="border-t mt-3 pt-3 flex items-center justify-between font-bold">
               <span>Total</span>
-              <span className="text-gold">{formatGBP(totalPrice)}</span>
+              <span className="text-gold">{formatGBP(finalTotal)}</span>
             </div>
           </aside>
         </div>

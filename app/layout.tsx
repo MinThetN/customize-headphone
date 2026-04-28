@@ -2,6 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import Footer from '@/components/Footer';
+import CookieConsentBanner from '@/components/CookieConsentBanner';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -45,6 +47,8 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${dmSans.variable} font-sans`}>
         <ThemeProvider>
           {children}
+          <Footer />
+          <CookieConsentBanner />
         </ThemeProvider>
       </body>
     </html>

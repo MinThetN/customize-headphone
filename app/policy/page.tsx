@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Header from '@/components/Header';
 
 export default function PolicyPage() {
@@ -8,30 +9,29 @@ export default function PolicyPage() {
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
       <main className="relative pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto bg-card/60 backdrop-blur-sm border rounded-2xl p-8 space-y-6">
-          <h1 className="text-4xl font-playfair font-bold">Company Policy</h1>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Returns</h2>
-            <p className="text-gray-400">
-              Returns are accepted within 14 days of delivery for unused products in
-              original condition.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Shipping</h2>
-            <p className="text-gray-400">
-              Buyers can view shipping progress in the Shipping page after purchase.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Support</h2>
-            <p className="text-gray-400">
-              For order or customization issues, contact SONIC support for manual review.
-            </p>
-          </section>
+        <div className="max-w-4xl mx-auto bg-card/60 backdrop-blur-sm border rounded-2xl p-8">
+          <h1 className="text-4xl font-playfair font-bold mb-4">Policy & Compliance Hub</h1>
+          <p className="text-gray-400 mb-6">
+            Access legal, privacy, returns, and marketing disclosure pages.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Link href="/privacy-policy" className="rounded-xl border p-4 hover:border-gold transition-colors">
+              <h2 className="font-semibold mb-1">Privacy Policy</h2>
+              <p className="text-sm text-gray-400">UK GDPR aligned data and consent policy.</p>
+            </Link>
+            <Link href="/terms-conditions" className="rounded-xl border p-4 hover:border-gold transition-colors">
+              <h2 className="font-semibold mb-1">Terms & Conditions</h2>
+              <p className="text-sm text-gray-400">Website use, orders, and service terms.</p>
+            </Link>
+            <Link href="/returns-refund-policy" className="rounded-xl border p-4 hover:border-gold transition-colors">
+              <h2 className="font-semibold mb-1">Returns & Refund Policy</h2>
+              <p className="text-sm text-gray-400">Returns eligibility and refund timing rules.</p>
+            </Link>
+            <Link href="/disclosure" className="rounded-xl border p-4 hover:border-gold transition-colors">
+              <h2 className="font-semibold mb-1">#Ad / Influencer Disclosure</h2>
+              <p className="text-sm text-gray-400">Paid promotion and affiliate transparency.</p>
+            </Link>
+          </div>
         </div>
       </main>
     </div>

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Heart } from 'lucide-react';
 import clsx from 'clsx';
 import Header from '@/components/Header';
 import HeadphonePreview from '@/components/HeadphonePreview';
@@ -12,8 +12,9 @@ import StickersTab from '@/components/tabs/StickersTab';
 import TextTab from '@/components/tabs/TextTab';
 import ImageTab from '@/components/tabs/ImageTab';
 import { CustomizationProvider, useCustomization } from '@/contexts/CustomizationContext';
-import { getModelById } from '@/lib/models';
+import { getModelById, HeadphoneModel } from '@/lib/models';
 import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 
 const tabs = [
   { id: 'color', label: 'Color', component: ColorTab },
@@ -30,34 +31,30 @@ const gbpFormatter = new Intl.NumberFormat('en-GB', {
 
 const formatGBP = (price: number) => gbpFormatter.format(price);
 
-const bundleOptions = [
-  {
-    id: 'base-base',
-    name: 'Base + Base',
-    price: 49,
-    description: 'Bundle offer for base model',
-  },
-  {
-    id: 'base-premium',
-    name: 'Base + Premium',
-    price: 79,
-    description: 'Bundle offer for base model and premium',
-  },
-  {
-    id: 'premium-premium',
-    name: 'Premium + Premium',
-    price: 99,
-    description: 'Bundle offer for premium',
-  },
+const addOnOptions = [
+  'Custom earpieces',
+  'Music player',
+  '2-year after-sales care',
+  'Repair service',
 ];
+
+const patternOptions = [
+  { id: 'solid', label: 'Solid' },
+  { id: 'carbon', label: 'Carbon' },
+  { id: 'wave', label: 'Wave' },
+  { id: 'geometric', label: 'Geometric' },
+] as const;
+
+const earpieceStyles = [
+  { id: 'standard', label: 'Standard' },
+  { id: 'comfort', label: 'Comfort' },
+  { id: 'sport', label: 'Sport' },
+] as const;
 
 export default function CustomizeModelPage() {
   const params = useParams();
-  const searchParams = useSearchParams();
   const modelId = params.modelId as string;
   const model = getModelById(modelId);
-  const bundleId = searchParams.get('bundle');
-  const selectedBundle = bundleOptions.find((bundle) => bundle.id === bundleId);
 
   if (!model) {
     return <div>Model not found</div>;
@@ -65,41 +62,42 @@ export default function CustomizeModelPage() {
 
   return (
     <CustomizationProvider initialModelId={model.id} initialBaseColor={model.baseColors[0]}>
-      <CustomizeContent model={model} selectedBundle={selectedBundle} />
+      <CustomizeContent model={model} />
     </CustomizationProvider>
   );
 }
 
 function CustomizeContent({
   model,
-  selectedBundle,
 }: {
-  model: ReturnType<typeof getModelById>;
-  selectedBundle?: (typeof bundleOptions)[number];
+  model: HeadphoneModel;
 }) {
   const [activeTab, setActiveTab] = useState('color');
   const [angle, setAngle] = useState<'front' | 'left' | 'right'>('front');
   const router = useRouter();
-  const { customization, resetCustomization, updateColors } = useCustomization();
+  const {
+    customization,
+    resetCustomization,
+    updateColors,
+    toggleAddOn,
+    updatePattern,
+    updateEarpieceStyle,
+  } = useCustomization();
   const { addToCart } = useCart();
+  const { saveForLater } = useWishlist();
 
   if (!model) return null;
 
   const ActiveComponent = tabs.find(t => t.id === activeTab)?.component || ColorTab;
 
   const handleAddToCart = () => {
-    if (selectedBundle) {
-      addToCart(
-        `bundle-${selectedBundle.id}`,
-        `Bundle: ${selectedBundle.name}`,
-        selectedBundle.price,
-        customization
-      );
-      router.push('/cart');
-      return;
-    }
     addToCart(model.id, model.name, model.price, customization);
     router.push('/cart');
+  };
+
+  const handleSaveForLater = () => {
+    saveForLater(model.id, model.name, model.price, customization);
+    router.push('/wishlist');
   };
   const handleReset = () => {
     resetCustomization(model.id!, model.baseColors[0]!);
@@ -182,20 +180,12 @@ function CustomizeContent({
             <div className="mb-4">
               <h1 className="text-3xl font-playfair font-bold mb-2">{model.name}</h1>
               <p className="text-gray-400">{model.tagline}</p>
-              {selectedBundle ? (
-                <div className="mt-3 rounded-xl border border-gold/30 bg-gold/5 p-3">
-                  <p className="text-sm text-gray-400">Bundle selected</p>
-                  <p className="font-semibold">{selectedBundle.name}</p>
-                  <p className="text-xs text-gray-400">{selectedBundle.description}</p>
-                  <p className="text-2xl font-bold text-gold mt-2">
-                    {formatGBP(selectedBundle.price)}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-2xl font-bold text-gold mt-2">
-                  {formatGBP(model.price)}
-                </p>
-              )}
+              <p className="text-2xl font-bold text-gold mt-2">
+                {formatGBP(model.price)}
+              </p>
+              <p className="text-sm text-gray-400 mt-2">
+                High-quality materials, premium finish, and detailed customization options.
+              </p>
             </div>
 
             <div className="flex gap-2 mb-4 border-b border-border-custom pb-3">
@@ -229,14 +219,85 @@ function CustomizeContent({
               </AnimatePresence>
             </div>
 
+            {addOnOptions.length > 0 ? (
+              <div className="mt-4 pt-4 border-t border-border-custom">
+                <h2 className="font-semibold mb-3">Add-on Options</h2>
+                <div className="space-y-2">
+                  {addOnOptions.map((option) => {
+                    const selected = customization.addOns.includes(option);
+                    return (
+                      <label
+                        key={option}
+                        className={`flex items-center justify-between rounded-xl border px-3 py-2 cursor-pointer transition-colors ${
+                          selected ? 'border-gold bg-gold/10' : 'border'
+                        }`}
+                      >
+                        <span className="text-sm">{option}</span>
+                        <input
+                          type="checkbox"
+                          checked={selected}
+                          onChange={() => toggleAddOn(option)}
+                          className="accent-cyan-500"
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
             <div className="mt-4 pt-4 border-t border-border-custom">
+              <h2 className="font-semibold mb-3">Pattern</h2>
+              <div className="grid grid-cols-2 gap-2">
+                {patternOptions.map((pattern) => (
+                  <button
+                    key={pattern.id}
+                    onClick={() => updatePattern(pattern.id)}
+                    className={`rounded-xl border px-3 py-2 text-sm text-left ${
+                      customization.pattern === pattern.id
+                        ? 'border-gold bg-gold/10'
+                        : 'border hover:border-gold/40'
+                    }`}
+                  >
+                    {pattern.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-border-custom">
+              <h2 className="font-semibold mb-3">Earpiece Style</h2>
+              <div className="grid grid-cols-3 gap-2">
+                {earpieceStyles.map((style) => (
+                  <button
+                    key={style.id}
+                    onClick={() => updateEarpieceStyle(style.id)}
+                    className={`rounded-xl border px-3 py-2 text-sm ${
+                      customization.earpieceStyle === style.id
+                        ? 'border-gold bg-gold/10'
+                        : 'border hover:border-gold/40'
+                    }`}
+                  >
+                    {style.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-border-custom">
+              <button
+                onClick={handleSaveForLater}
+                className="w-full mb-3 border border-gold/40 text-gold px-5 py-3 rounded-xl font-semibold text-base hover:bg-gold/10 transition-all flex items-center justify-center gap-2"
+              >
+                <Heart className="w-5 h-5" />
+                Save For Later
+              </button>
               <button
                 onClick={handleAddToCart}
                 className="w-full bg-gold text-dark px-5 py-3 rounded-xl font-bold text-base hover:bg-gold/90 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-5 h-5" />
-                Add to Cart -{' '}
-                {formatGBP(selectedBundle ? selectedBundle.price : model.price)}
+                Add to Cart - {formatGBP(model.price)}
               </button>
             </div>
           </div>

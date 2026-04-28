@@ -12,6 +12,9 @@ export interface CustomizationState {
     color: string;
   };
   customImage: string | null;
+  addOns: string[];
+  pattern: 'solid' | 'carbon' | 'wave' | 'geometric';
+  earpieceStyle: 'standard' | 'comfort' | 'sport';
 }
 
 export interface CartItem {
@@ -21,6 +24,15 @@ export interface CartItem {
   modelPrice: number;
   customization: CustomizationState;
   quantity: number;
+}
+
+export interface WishlistItem {
+  id: string;
+  modelId: string;
+  modelName: string;
+  modelPrice: number;
+  customization: CustomizationState;
+  createdAt: string;
 }
 
 export interface UserProfile {
@@ -45,6 +57,11 @@ export interface Order {
   items: CartItem[];
   total: number;
   paymentMethod: 'credit-card' | 'debit-card';
+  studentDiscountApplied: boolean;
+  giftPackaging: boolean;
+  subtotal: number;
+  discountAmount: number;
+  giftPackagingFee: number;
   shippingStatus: 'Processing' | 'Packed' | 'Shipped' | 'Delivered';
   address: Address;
   createdAt: string;
