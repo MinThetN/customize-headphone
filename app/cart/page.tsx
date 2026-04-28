@@ -20,7 +20,7 @@ export default function CartPage() {
   if (!isLoaded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-gray-400">Loading cart...</div>
+        <div className="text-muted-foreground">Loading cart...</div>
       </div>
     );
   }
@@ -31,7 +31,7 @@ export default function CartPage() {
 
       <Header />
 
-      <main className="relative pt-32 pb-20 px-6">
+      <main className="relative pt-48 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -45,7 +45,7 @@ export default function CartPage() {
             {cart.length === 0 ? (
               <div className="text-center py-20">
                 <ShoppingBag className="w-20 h-20 mx-auto mb-6 text-gray-600" />
-                <p className="text-2xl text-gray-400 mb-8">Your cart is empty</p>
+                <p className="text-2xl text-muted-foreground mb-8">Your cart is empty</p>
                 <Link
                   href="/customize"
                   className="inline-flex items-center gap-2 bg-gold text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold/90 transition-all"
@@ -73,15 +73,15 @@ export default function CartPage() {
                 </div>
 
                 <div className="lg:col-span-1">
-                  <div className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 sticky top-32">
+                  <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 sticky top-32">
                     <h2 className="text-2xl font-playfair font-bold mb-6">Summary</h2>
 
                     <div className="space-y-4 mb-6">
-                      <div className="flex justify-between text-gray-400">
+                      <div className="flex justify-between text-muted-foreground">
                         <span>Subtotal</span>
                         <span>{formatGBP(totalPrice)}</span>
                       </div>
-                      <div className="flex justify-between text-gray-400">
+                      <div className="flex justify-between text-muted-foreground">
                         <span>Shipping</span>
                         <span>FREE</span>
                       </div>
@@ -122,7 +122,7 @@ function CartItemCard({
   onUpdateQuantity: (qty: number) => void;
 }) {
   return (
-    <div className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+    <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
       <div className="flex gap-6">
         <div className="w-32 h-32 bg-card rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
           <div
@@ -139,7 +139,7 @@ function CartItemCard({
           <div className="flex justify-between items-start mb-2">
             <div>
               <h3 className="text-xl font-playfair font-bold">{item.modelName}</h3>
-              <p className="text-sm text-gray-400">Custom Build</p>
+              <p className="text-sm text-muted-foreground">Custom Build</p>
             </div>
             <p className="text-xl font-bold text-gold">
               {formatGBP(item.modelPrice)}
@@ -148,7 +148,7 @@ function CartItemCard({
 
           <div className="space-y-2 mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Colors:</span>
+              <span className="text-sm text-muted-foreground">Colors:</span>
               <div className="flex gap-1">
                 <div
                   className="w-5 h-5 rounded-full border"
@@ -167,18 +167,18 @@ function CartItemCard({
 
             {item.customization.stickers.length > 0 && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">Stickers:</span>
+                <span className="text-sm text-muted-foreground">Stickers:</span>
                 <span className="text-sm">
                   {item.customization.stickers.length} selected
                 </span>
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Pattern:</span>
+              <span className="text-sm text-muted-foreground">Pattern:</span>
               <span className="text-sm capitalize">{item.customization.pattern ?? 'solid'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Earpiece:</span>
+              <span className="text-sm text-muted-foreground">Earpiece:</span>
               <span className="text-sm capitalize">
                 {item.customization.earpieceStyle ?? 'standard'}
               </span>
@@ -186,13 +186,13 @@ function CartItemCard({
 
             {item.customization.text.content && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">Text:</span>
+                <span className="text-sm text-muted-foreground">Text:</span>
                 <span className="text-sm">{item.customization.text.content}</span>
               </div>
             )}
             {item.customization.addOns?.length > 0 && (
               <div className="flex items-start gap-2">
-                <span className="text-sm text-gray-400">Add-ons:</span>
+                <span className="text-sm text-muted-foreground">Add-ons:</span>
                 <span className="text-sm">{item.customization.addOns.join(', ')}</span>
               </div>
             )}
@@ -218,7 +218,7 @@ function CartItemCard({
 
             <button
               onClick={onRemove}
-              className="text-gray-400 hover:text-red-500 transition-colors p-2"
+              className="text-muted-foreground hover:text-red-500 transition-colors p-2"
             >
               <Trash2 className="w-5 h-5" />
             </button>

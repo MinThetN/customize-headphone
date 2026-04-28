@@ -121,10 +121,10 @@ function CustomizeContent({
 
       <Header />
 
-      <div className="pt-24 px-6 pb-10">
+      <div className="pt-44 px-4 md:px-6 pb-10">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-400 hover:text-gold transition-colors mb-6"
+          className="flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors mb-6"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Models
@@ -138,7 +138,7 @@ function CustomizeContent({
                   onClick={() => setAngle('left')}
                   className={clsx(
                     'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
-                    angle === 'left' ? 'bg-gold text-dark' : 'text-gray-300 hover:text-white'
+                    angle === 'left' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
                   Left
@@ -147,7 +147,7 @@ function CustomizeContent({
                   onClick={() => setAngle('front')}
                   className={clsx(
                     'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
-                    angle === 'front' ? 'bg-gold text-dark' : 'text-gray-300 hover:text-white'
+                    angle === 'front' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
                   Front
@@ -156,7 +156,7 @@ function CustomizeContent({
                   onClick={() => setAngle('right')}
                   className={clsx(
                     'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
-                    angle === 'right' ? 'bg-gold text-dark' : 'text-gray-300 hover:text-white'
+                    angle === 'right' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
                   Right
@@ -185,11 +185,11 @@ function CustomizeContent({
           <div className="bg-card/50 backdrop-blur-sm border rounded-3xl p-6">
             <div className="mb-4">
               <h1 className="text-3xl font-playfair font-bold mb-2">{model.name}</h1>
-              <p className="text-gray-400">{model.tagline}</p>
+              <p className="text-muted-foreground">{model.tagline}</p>
               <p className="text-2xl font-bold text-gold mt-2">
                 {formatGBP(model.price)}
               </p>
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 High-quality materials, premium finish, and detailed customization options.
               </p>
             </div>
@@ -203,7 +203,7 @@ function CustomizeContent({
                     'px-5 py-2 rounded-lg font-semibold transition-all text-sm',
                     activeTab === tab.id
                       ? 'bg-gold text-dark'
-                      : 'bg-card/50 text-gray-400 hover:text-white'
+                      : 'bg-card/50 text-muted-foreground hover:text-white'
                   )}
                 >
                   {tab.label}

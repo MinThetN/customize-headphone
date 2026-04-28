@@ -32,11 +32,11 @@ export default function WishlistPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-32 pb-20 px-6">
+      <main className="relative pt-48 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl font-playfair font-bold mb-6">Wishlist / Save For Later</h1>
           {wishlist.length === 0 ? (
-            <div className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 text-gray-400">
+            <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 text-muted-foreground">
               No saved customizations yet.
             </div>
           ) : (
@@ -44,17 +44,17 @@ export default function WishlistPage() {
               {wishlist.map((item) => (
                 <article
                   key={item.id}
-                  className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6"
+                  className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h2 className="text-xl font-semibold">{item.modelName}</h2>
-                      <p className="text-sm text-gray-400 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         Pattern: {item.customization.pattern} | Earpiece:{' '}
                         {item.customization.earpieceStyle}
                       </p>
                       {item.customization.addOns.length > 0 ? (
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           Add-ons: {item.customization.addOns.join(', ')}
                         </p>
                       ) : null}

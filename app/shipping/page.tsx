@@ -28,15 +28,15 @@ export default function ShippingPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-32 pb-20 px-6">
+      <main className="relative pt-48 pb-20 px-4 md:px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-playfair font-bold mb-3">Shipping Service</h1>
-          <p className="text-gray-400 mb-8">
+          <p className="text-muted-foreground mb-8">
             Buyers can see shipping process after purchase.
           </p>
           <div className="space-y-4">
             {orders.length === 0 ? (
-              <div className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 text-gray-400">
+              <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 text-muted-foreground">
                 No shipping records yet.
               </div>
             ) : (
@@ -45,9 +45,9 @@ export default function ShippingPage() {
                 return (
                   <article
                     key={order.id}
-                    className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6"
+                    className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6"
                   >
-                    <p className="text-sm text-gray-400 mb-3">{order.id}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{order.id}</p>
                     <div className="grid sm:grid-cols-4 gap-3">
                       {shippingSteps.map((step, index) => (
                         <div

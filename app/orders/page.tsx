@@ -39,32 +39,32 @@ export default function OrdersPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-32 pb-20 px-6">
+      <main className="relative pt-48 pb-20 px-4 md:px-6">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8">
           <section className="lg:col-span-2">
             <h1 className="text-4xl font-playfair font-bold mb-6">Purchased Items</h1>
             <div className="space-y-4">
               {orders.length === 0 ? (
-                <div className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 text-gray-400">
+                <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 text-muted-foreground">
                   No purchases yet.
                 </div>
               ) : (
                 orders.map((order) => (
                   <article
                     key={order.id}
-                    className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6"
+                    className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <p className="text-sm text-gray-400">{order.id}</p>
+                        <p className="text-sm text-muted-foreground">{order.id}</p>
                         <p className="font-semibold">{new Date(order.createdAt).toLocaleString()}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-400">{order.shippingStatus}</p>
+                        <p className="text-sm text-muted-foreground">{order.shippingStatus}</p>
                         <p className="text-lg font-bold text-gold">{formatGBP(order.total)}</p>
                       </div>
                     </div>
-                    <div className="text-xs text-gray-400 mb-3">
+                    <div className="text-xs text-muted-foreground mb-3">
                       <p>Subtotal: {formatGBP(order.subtotal ?? order.total)}</p>
                       <p>Student discount: -{formatGBP(order.discountAmount ?? 0)}</p>
                       <p>Gift packaging: {order.giftPackaging ? 'Yes' : 'No'}</p>
@@ -76,7 +76,7 @@ export default function OrdersPage() {
                             {item.modelName} x {item.quantity}
                           </p>
                           {item.customization.addOns?.length > 0 ? (
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-muted-foreground">
                               Add-ons: {item.customization.addOns.join(', ')}
                             </p>
                           ) : null}
@@ -89,7 +89,7 @@ export default function OrdersPage() {
             </div>
           </section>
 
-          <aside className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 h-fit sticky top-32">
+          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 h-fit sticky top-32">
             <h2 className="text-xl font-bold mb-4">Your Address</h2>
             <form onSubmit={handleAddressSave} className="space-y-3">
               <input

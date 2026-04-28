@@ -18,7 +18,7 @@ const bodyFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'SONIC - Custom Headphones',
+  title: 'BPHONE',
   description: 'Design your perfect headphones with our luxury customization studio',
   openGraph: {
     images: [

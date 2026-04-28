@@ -79,17 +79,17 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-32 pb-20 px-6">
+      <main className="relative pt-48 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto grid lg:grid-cols-3 gap-8">
           <form onSubmit={handlePlaceOrder} className="lg:col-span-2 space-y-6">
-            <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+            <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
               <h1 className="text-3xl font-playfair font-bold mb-4">Checkout</h1>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Complete payment using credit card or debit card.
               </p>
             </section>
 
-            <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+            <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
               <h2 className="text-xl font-bold mb-4">Payment Method</h2>
               <div className="grid sm:grid-cols-2 gap-3 mb-4">
                 <button
@@ -167,7 +167,7 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+            <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
               <h2 className="text-xl font-bold mb-4">Shipping Address</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 <input
@@ -220,9 +220,9 @@ export default function CheckoutPage() {
               </label>
             </section>
 
-            <section className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6">
+            <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
               <h2 className="text-xl font-bold mb-2">Returns Policy</h2>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Clear returns policy: approved refunds are processed within 2 business days
                 after return inspection.
               </p>
@@ -236,7 +236,7 @@ export default function CheckoutPage() {
             </button>
           </form>
 
-          <aside className="bg-card/60 backdrop-blur-sm border rounded-2xl p-6 h-fit sticky top-32">
+          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 h-fit sticky top-32">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
             <div className="space-y-3 mb-4">
               {cart.map((item) => (
@@ -248,7 +248,7 @@ export default function CheckoutPage() {
                     <span>{formatGBP(item.modelPrice * item.quantity)}</span>
                   </div>
                   {item.customization.addOns?.length > 0 ? (
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Add-ons: {item.customization.addOns.join(', ')}
                     </p>
                   ) : null}
