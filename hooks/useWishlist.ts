@@ -3,14 +3,22 @@
 import { useEffect, useState } from 'react';
 import { CustomizationState, WishlistItem } from '@/lib/types';
 
-const WISHLIST_STORAGE_KEY = 'sonic-wishlist';
+const WISHLIST_STORAGE_PREFIX = 'sonic-wishlist';
 
-export function useWishlist() {
+export function useWishlist(userEmail?: string) {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const storageKey = userEmail
+    ? `${WISHLIST_STORAGE_PREFIX}:${userEmail.toLowerCase()}`
+    : null;
 
   useEffect(() => {
-    const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
+    if (!storageKey) {
+      setWishlist([]);
+      setIsLoaded(true);
+      return;
+    }
+    const stored = localStorage.getItem(storageKey);
     if (stored) {
       try {
         setWishlist(JSON.parse(stored));
@@ -19,12 +27,12 @@ export function useWishlist() {
       }
     }
     setIsLoaded(true);
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
-  }, [wishlist, isLoaded]);
+    if (!isLoaded || !storageKey) return;
+    localStorage.setItem(storageKey, JSON.stringify(wishlist));
+  }, [wishlist, isLoaded, storageKey]);
 
   const saveForLater = (
     modelId: string,
@@ -32,8 +40,10 @@ export function useWishlist() {
     modelPrice: number,
     customization: CustomizationState
   ) => {
+    if (!userEmail) return;
     const item: WishlistItem = {
       id: Date.now().toString(),
+      userEmail,
       modelId,
       modelName,
       modelPrice,

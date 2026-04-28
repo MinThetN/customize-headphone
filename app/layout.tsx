@@ -1,17 +1,17 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Playfair_Display, DM_Sans } from 'next/font/google';
+import { Manrope, Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Footer from '@/components/Footer';
 import CookieConsentBanner from '@/components/CookieConsentBanner';
 
-const playfair = Playfair_Display({
+const headingFont = Manrope({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const bodyFont = Inter({
   subsets: ['latin'],
   variable: '--font-dm-sans',
   display: 'swap',
@@ -44,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${dmSans.variable} font-sans`}>
+      <body className={`${headingFont.variable} ${bodyFont.variable} font-sans antialiased`}>
         <ThemeProvider>
           {children}
           <Footer />

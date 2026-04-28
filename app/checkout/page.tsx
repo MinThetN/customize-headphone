@@ -29,11 +29,18 @@ export default function CheckoutPage() {
   const [cvv, setCvv] = useState('');
   const [studentCode, setStudentCode] = useState('');
   const [studentDiscountApplied, setStudentDiscountApplied] = useState(false);
+  const [studentDiscountError, setStudentDiscountError] = useState('');
   const [giftPackaging, setGiftPackaging] = useState(false);
 
   const discountAmount = studentDiscountApplied ? totalPrice * 0.1 : 0;
   const giftPackagingFee = giftPackaging ? 5 : 0;
   const finalTotal = Math.max(totalPrice - discountAmount + giftPackagingFee, 0);
+
+  const handleApplyStudentDiscount = () => {
+    const isValid = studentCode.trim().toUpperCase() === 'STUDENT10';
+    setStudentDiscountApplied(isValid);
+    setStudentDiscountError(isValid ? '' : 'Invalid code. Use STUDENT10 for 10% off.');
+  };
 
   useEffect(() => {
     if (!authLoaded) return;
@@ -137,13 +144,15 @@ export default function CheckoutPage() {
                     className="flex-1 rounded-xl border bg-background px-4 py-3"
                     placeholder="Enter code (STUDENT10)"
                     value={studentCode}
-                    onChange={(e) => setStudentCode(e.target.value)}
+                    onChange={(e) => {
+                      setStudentCode(e.target.value);
+                      setStudentDiscountApplied(false);
+                      setStudentDiscountError('');
+                    }}
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      setStudentDiscountApplied(studentCode.trim().toUpperCase() === 'STUDENT10')
-                    }
+                    onClick={handleApplyStudentDiscount}
                     className="rounded-xl bg-gold text-dark px-4 py-3 font-semibold hover:bg-gold/90 transition-colors"
                   >
                     Apply
@@ -151,6 +160,9 @@ export default function CheckoutPage() {
                 </div>
                 {studentDiscountApplied ? (
                   <p className="text-xs text-green-500 mt-2">Student discount applied.</p>
+                ) : null}
+                {studentDiscountError ? (
+                  <p className="text-xs text-red-500 mt-2">{studentDiscountError}</p>
                 ) : null}
               </div>
             </section>

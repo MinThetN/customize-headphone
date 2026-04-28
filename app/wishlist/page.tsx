@@ -1,8 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -13,10 +16,17 @@ const gbpFormatter = new Intl.NumberFormat('en-GB', {
 const formatGBP = (price: number) => gbpFormatter.format(price);
 
 export default function WishlistPage() {
-  const { wishlist, isLoaded, removeFromWishlist } = useWishlist();
+  const router = useRouter();
+  const { user, isLoaded: authLoaded } = useAuth();
+  const { wishlist, isLoaded, removeFromWishlist } = useWishlist(user?.email);
   const { addToCart } = useCart();
 
-  if (!isLoaded) return <div className="min-h-screen bg-background" />;
+  useEffect(() => {
+    if (!authLoaded) return;
+    if (!user) router.push('/auth?redirect=/wishlist');
+  }, [authLoaded, user, router]);
+
+  if (!isLoaded || !authLoaded) return <div className="min-h-screen bg-background" />;
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">

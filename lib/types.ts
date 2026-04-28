@@ -28,6 +28,7 @@ export interface CartItem {
 
 export interface WishlistItem {
   id: string;
+  userEmail: string;
   modelId: string;
   modelName: string;
   modelPrice: number;

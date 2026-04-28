@@ -25,10 +25,10 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        gold: '#22d3ee',
-        dark: '#050816',
-        surface: '#0f172a',
-        'border-custom': '#243247',
+        gold: '#2563eb',
+        dark: '#0b1220',
+        surface: '#111827',
+        'border-custom': '#334155',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

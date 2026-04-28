@@ -15,6 +15,7 @@ import { CustomizationProvider, useCustomization } from '@/contexts/Customizatio
 import { getModelById, HeadphoneModel } from '@/lib/models';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
+import { useAuth } from '@/hooks/useAuth';
 
 const tabs = [
   { id: 'color', label: 'Color', component: ColorTab },
@@ -84,7 +85,8 @@ function CustomizeContent({
     updateEarpieceStyle,
   } = useCustomization();
   const { addToCart } = useCart();
-  const { saveForLater } = useWishlist();
+  const { user } = useAuth();
+  const { saveForLater } = useWishlist(user?.email);
 
   if (!model) return null;
 
@@ -96,6 +98,10 @@ function CustomizeContent({
   };
 
   const handleSaveForLater = () => {
+    if (!user) {
+      router.push('/auth?redirect=/wishlist');
+      return;
+    }
     saveForLater(model.id, model.name, model.price, customization);
     router.push('/wishlist');
   };
