@@ -132,7 +132,7 @@ function CustomizeContent({
 
       <Header />
 
-      <div className="pt-36 px-4 md:px-6 pb-10">
+      <div className="pt-32 md:pt-36 px-4 md:px-6 pb-10">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors mb-6"
@@ -142,13 +142,13 @@ function CustomizeContent({
         </button>
 
         <div className="max-w-[1600px] mx-auto grid grid-cols-1 gap-6 lg:[grid-template-columns:minmax(0,1fr)_380px]">
-          <div className="bg-card/50 backdrop-blur-sm border rounded-3xl p-6 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <div className="inline-flex gap-2 bg-background rounded-xl p-1 border">
+          <div className="bg-card/50 backdrop-blur-sm border rounded-3xl p-4 sm:p-6 flex flex-col">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div className="inline-flex gap-1.5 sm:gap-2 bg-background rounded-xl p-1 border self-start">
                 <button
                   onClick={() => setAngle('left')}
                   className={clsx(
-                    'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
+                    'px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors',
                     angle === 'left' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
@@ -157,7 +157,7 @@ function CustomizeContent({
                 <button
                   onClick={() => setAngle('front')}
                   className={clsx(
-                    'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
+                    'px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors',
                     angle === 'front' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
@@ -166,23 +166,23 @@ function CustomizeContent({
                 <button
                   onClick={() => setAngle('right')}
                   className={clsx(
-                    'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
+                    'px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors',
                     angle === 'right' ? 'bg-gold text-dark' : 'text-muted-foreground hover:text-white'
                   )}
                 >
                   Right
                 </button>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 self-start sm:self-auto">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-lg border text-sm hover:border-gold transition-colors"
+                  className="px-3 sm:px-4 py-2 rounded-lg border text-xs sm:text-sm hover:border-gold transition-colors"
                 >
                   Reset
                 </button>
                 <button
                   onClick={handleRandomize}
-                  className="px-4 py-2 rounded-lg border text-sm hover:border-gold transition-colors"
+                  className="px-3 sm:px-4 py-2 rounded-lg border text-xs sm:text-sm hover:border-gold transition-colors"
                 >
                   Randomize
                 </button>
@@ -193,9 +193,9 @@ function CustomizeContent({
             </div>
           </div>
 
-          <div className="bg-card/50 backdrop-blur-sm border rounded-3xl p-6">
+          <div className="bg-card/50 backdrop-blur-sm border rounded-3xl p-4 sm:p-6">
             <div className="mb-4">
-              <h1 className="text-3xl font-playfair font-bold mb-2">{model.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-playfair font-bold mb-2">{model.name}</h1>
               <p className="text-muted-foreground">{model.tagline}</p>
               <p className="text-2xl font-bold text-gold mt-2">
                 {formatGBP(model.price)}
@@ -205,13 +205,13 @@ function CustomizeContent({
               </p>
             </div>
 
-            <div className="flex gap-2 mb-4 border-b border-border-custom pb-3">
+            <div className="flex gap-2 mb-4 border-b border-border-custom pb-3 overflow-x-auto no-scrollbar whitespace-nowrap">
               {allowedTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={clsx(
-                    'px-5 py-2 rounded-lg font-semibold transition-all text-sm',
+                    'px-4 sm:px-5 py-2 rounded-lg font-semibold transition-all text-xs sm:text-sm shrink-0',
                     activeTab === tab.id
                       ? 'bg-gold text-dark'
                       : 'bg-card/50 text-muted-foreground hover:text-white'
@@ -245,11 +245,11 @@ function CustomizeContent({
                     return (
                       <label
                         key={option.name}
-                        className={`flex items-center justify-between rounded-xl border px-3 py-2 cursor-pointer transition-colors ${
+                        className={`flex items-center justify-between rounded-xl border px-3 py-2 cursor-pointer transition-colors gap-3 ${
                           selected ? 'border-gold bg-gold/10' : 'border'
                         }`}
                       >
-                        <span className="text-sm">
+                        <span className="text-sm break-words">
                           {option.name} (+{formatGBP(option.fee)})
                         </span>
                         <input
@@ -289,7 +289,7 @@ function CustomizeContent({
             {model.customization.allowEarpieceStyle ? (
               <div className="mt-4 pt-4 border-t border-border-custom">
                 <h2 className="font-semibold mb-3">Earpiece Style</h2>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {earpieceStyles.map((style) => (
                     <button
                       key={style.id}
@@ -310,14 +310,14 @@ function CustomizeContent({
             <div className="mt-4 pt-4 border-t border-border-custom">
               <button
                 onClick={handleSaveForLater}
-                className="w-full mb-3 border border-gold/40 text-gold px-5 py-3 rounded-xl font-semibold text-base hover:bg-gold/10 transition-all flex items-center justify-center gap-2"
+                className="w-full mb-3 border border-gold/40 text-gold px-5 py-3 rounded-xl font-semibold text-sm sm:text-base hover:bg-gold/10 transition-all flex items-center justify-center gap-2"
               >
                 <Heart className="w-5 h-5" />
                 Save For Later
               </button>
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-gold text-dark px-5 py-3 rounded-xl font-bold text-base hover:bg-gold/90 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+                className="w-full bg-gold text-dark px-5 py-3 rounded-xl font-bold text-sm sm:text-base hover:bg-gold/90 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-5 h-5" />
                 Add to Cart - {formatGBP(customizedPrice)}

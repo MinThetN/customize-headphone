@@ -23,6 +23,16 @@ export function useCart() {
   }, []);
 
   useEffect(() => {
+    const handleLogout = () => {
+      setCart([]);
+      localStorage.removeItem(CART_STORAGE_KEY);
+    };
+
+    window.addEventListener('sonic:logout', handleLogout);
+    return () => window.removeEventListener('sonic:logout', handleLogout);
+  }, []);
+
+  useEffect(() => {
     if (isLoaded) {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
     }

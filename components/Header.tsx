@@ -29,7 +29,7 @@ export default function Header() {
           PREMIUM CUSTOM AUDIO STUDIO • FREE SHIPPING ABOVE $150
         </div>
       </div> */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-2.5 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-2">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-2.5 grid grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_1fr] items-center gap-2">
         <Link href="/" className="flex items-center gap-2.5 group shrink-0">
           <span className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-card">
             <Headphones className="w-5 h-5 text-gold" />
@@ -51,21 +51,21 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-2 md:gap-3">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3">
           {user ? (
             <button
               onClick={logout}
-              className="text-xs md:text-sm border rounded-full px-3 py-1.5 hover:border-gold hover:text-gold transition-colors"
+              className="text-[11px] sm:text-xs md:text-sm border rounded-full px-2.5 sm:px-3 py-1.5 hover:border-gold hover:text-gold transition-colors"
             >
               LOGOUT
             </button>
           ) : (
             <Link
               href="/auth"
-              className="inline-flex items-center gap-1 text-xs md:text-sm border rounded-full px-3 py-1.5 hover:border-gold hover:text-gold transition-colors"
+              className="inline-flex items-center gap-1 text-[11px] sm:text-xs md:text-sm border rounded-full px-2.5 sm:px-3 py-1.5 hover:border-gold hover:text-gold transition-colors"
             >
               <User className="w-3 h-3" />
-              LOGIN
+              <span className="hidden sm:inline">LOGIN</span>
             </Link>
           )}
           <button
@@ -91,12 +91,12 @@ export default function Header() {
         </div>
       </div>
 
-      <nav className="lg:hidden max-w-7xl mx-auto px-4 md:px-6 py-1.5 flex items-center justify-center flex-wrap gap-2 md:gap-3">
+      <nav className="lg:hidden max-w-7xl mx-auto px-4 md:px-6 py-1.5 flex items-center gap-2 overflow-x-auto whitespace-nowrap no-scrollbar">
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="shrink-0 text-[11px] md:text-xs tracking-[0.16em] uppercase px-3 py-1.5 rounded-full border border-transparent hover:border-border hover:bg-card/80 hover:text-gold transition-colors"
+            className="shrink-0 text-[10px] sm:text-[11px] tracking-[0.14em] uppercase px-2.5 sm:px-3 py-1.5 rounded-full border border-transparent hover:border-border hover:bg-card/80 hover:text-gold transition-colors"
           >
             {link.label}
           </Link>

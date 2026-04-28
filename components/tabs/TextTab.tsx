@@ -51,15 +51,15 @@ export default function TextTab() {
 
       <div>
         <label className="block text-sm font-semibold mb-3">Text Color</label>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <input
             type="color"
             value={customization.text.color}
             onChange={(e) => updateText({ color: e.target.value })}
-            className="w-20 h-12 rounded-xl cursor-pointer bg-transparent border-2 border-border-custom"
+            className="w-16 sm:w-20 h-12 rounded-xl cursor-pointer bg-transparent border-2 border-border-custom"
           />
           <div
-            className="flex-1 h-12 rounded-xl border-2 border-border-custom flex items-center px-4 font-mono text-sm"
+            className="flex-1 h-12 rounded-xl border-2 border-border-custom flex items-center px-3 sm:px-4 font-mono text-xs sm:text-sm"
             style={{ color: customization.text.color }}
           >
             {customization.text.color}
@@ -72,7 +72,7 @@ export default function TextTab() {
           <p className="text-sm text-gray-400 mb-3">Preview:</p>
           <div
             className={clsx(
-              'text-3xl font-bold transition-colors',
+              'text-2xl sm:text-3xl font-bold transition-colors',
               customization.text.font
             )}
             style={{ color: customization.text.color }}

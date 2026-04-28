@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { UserProfile } from '@/lib/types';
 
 const AUTH_STORAGE_KEY = 'sonic-user';
+const CART_STORAGE_KEY = 'sonic-cart';
 
 export function useAuth() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -38,6 +39,8 @@ export function useAuth() {
 
   const logout = () => {
     localStorage.removeItem(AUTH_STORAGE_KEY);
+    localStorage.removeItem(CART_STORAGE_KEY);
+    window.dispatchEvent(new Event('sonic:logout'));
     setUser(null);
   };
 

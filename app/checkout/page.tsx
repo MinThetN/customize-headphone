@@ -7,6 +7,7 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useOrders } from '@/hooks/useOrders';
 import { getAddOnsTotal, getCustomizedUnitPrice } from '@/lib/pricing';
+import { CartItem } from '@/lib/types';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -38,9 +39,9 @@ export default function CheckoutPage() {
   const finalTotal = Math.max(totalPrice - discountAmount + giftPackagingFee, 0);
 
   const handleApplyStudentDiscount = () => {
-    const isValid = studentCode.trim().toUpperCase() === 'STUDENT10';
+    const isValid = /^\d+$/.test(studentCode.trim());
     setStudentDiscountApplied(isValid);
-    setStudentDiscountError(isValid ? '' : 'Invalid code. Use STUDENT10 for 10% off.');
+    setStudentDiscountError(isValid ? '' : 'Invalid student ID. Please enter numbers only.');
   };
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-40 pb-20 px-4 md:px-6">
+      <main className="relative pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto grid lg:grid-cols-3 gap-8">
           <form onSubmit={handlePlaceOrder} className="lg:col-span-2 space-y-6">
             <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
@@ -140,10 +141,10 @@ export default function CheckoutPage() {
               </div>
               <div className="mt-4 rounded-xl border p-3">
                 <p className="text-sm font-semibold mb-2">Student Discount (10% off)</p>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     className="flex-1 rounded-xl border bg-background px-4 py-3"
-                    placeholder="Enter code (STUDENT10)"
+                    placeholder="Enter student ID (numbers only)"
                     value={studentCode}
                     onChange={(e) => {
                       setStudentCode(e.target.value);
@@ -237,16 +238,22 @@ export default function CheckoutPage() {
             </button>
           </form>
 
-          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 h-fit sticky top-32">
+          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-5 sm:p-6 h-fit lg:sticky lg:top-32">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
             <div className="space-y-3 mb-4">
               {cart.map((item) => (
-                <div key={item.id} className="text-sm">
-                  <div className="flex items-center justify-between">
-                    <span>
-                      {item.modelName} x {item.quantity}
-                    </span>
-                    <span>
+                <div key={item.id} className="text-sm rounded-xl border border-border/70 p-3">
+                  <div className="flex items-center gap-3">
+                    <CheckoutHeadphoneIcon item={item} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium">
+                        {item.modelName} x {item.quantity}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {item.customization.pattern} / {item.customization.earpieceStyle}
+                      </p>
+                    </div>
+                    <span className="font-semibold">
                       {formatGBP(
                         getCustomizedUnitPrice(item.modelPrice, item.customization.addOns) *
                           item.quantity
@@ -282,5 +289,72 @@ export default function CheckoutPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+function CheckoutHeadphoneIcon({ item }: { item: CartItem }) {
+  const innerRadius =
+    item.customization.earpieceStyle === 'sport'
+      ? 10
+      : item.customization.earpieceStyle === 'comfort'
+        ? 13
+        : 11;
+  const clipLeftId = `checkout-left-${item.id}`;
+  const clipRightId = `checkout-right-${item.id}`;
+
+  return (
+    <svg
+      viewBox="0 0 120 90"
+      className="w-14 h-11 shrink-0"
+      role="img"
+      aria-label="Customized headphone preview"
+    >
+      <defs>
+        <clipPath id={clipLeftId}>
+          <circle cx="34" cy="62" r={innerRadius - 0.6} />
+        </clipPath>
+        <clipPath id={clipRightId}>
+          <circle cx="86" cy="62" r={innerRadius - 0.6} />
+        </clipPath>
+      </defs>
+
+      <path
+        d="M20,38 C36,14 84,14 100,38"
+        fill="none"
+        stroke={item.customization.colors.band}
+        strokeWidth="8"
+        strokeLinecap="round"
+      />
+      <rect x="26" y="38" width="4" height="16" rx="2" fill={item.customization.colors.shell} />
+      <rect x="90" y="38" width="4" height="16" rx="2" fill={item.customization.colors.shell} />
+
+      <circle cx="34" cy="62" r="15" fill={item.customization.colors.earCups} />
+      <circle cx="86" cy="62" r="15" fill={item.customization.colors.earCups} />
+      <circle cx="34" cy="62" r={innerRadius} fill="#0b0b0b" />
+      <circle cx="86" cy="62" r={innerRadius} fill="#0b0b0b" />
+
+      {item.customization.customImage && (
+        <>
+          <image
+            href={item.customization.customImage}
+            x="22"
+            y="50"
+            width="24"
+            height="24"
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#${clipLeftId})`}
+          />
+          <image
+            href={item.customization.customImage}
+            x="74"
+            y="50"
+            width="24"
+            height="24"
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#${clipRightId})`}
+          />
+        </>
+      )}
+    </svg>
   );
 }

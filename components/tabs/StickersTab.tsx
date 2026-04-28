@@ -16,7 +16,7 @@ export default function StickersTab() {
         </p>
       </div>
 
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 sm:gap-4">
         {AVAILABLE_STICKERS.map((sticker) => {
           const isSelected = customization.stickers.includes(sticker);
           const isDisabled = !isSelected && customization.stickers.length >= 5;
@@ -29,7 +29,7 @@ export default function StickersTab() {
               onClick={() => !isDisabled && toggleSticker(sticker)}
               disabled={isDisabled}
               className={clsx(
-                'aspect-square rounded-xl border-2 flex items-center justify-center text-4xl transition-all',
+                'aspect-square rounded-xl border-2 flex items-center justify-center text-3xl sm:text-4xl transition-all',
                 isSelected
                   ? 'border-gold bg-gold/10'
                   : 'border-border-custom bg-surface/30',
@@ -45,7 +45,7 @@ export default function StickersTab() {
       {customization.stickers.length > 0 && (
         <div className="mt-6 p-4 bg-surface/30 rounded-xl">
           <p className="text-sm text-gray-400 mb-2">Selected:</p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {customization.stickers.map((sticker, index) => (
               <span key={index} className="text-2xl">
                 {sticker}

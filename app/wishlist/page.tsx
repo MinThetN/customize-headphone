@@ -33,9 +33,9 @@ export default function WishlistPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-40 pb-20 px-4 md:px-6">
+      <main className="relative pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl font-playfair font-bold mb-6">Wishlist / Save For Later</h1>
+          <h1 className="text-3xl sm:text-4xl font-playfair font-bold mb-6">Wishlist / Save For Later</h1>
           {wishlist.length === 0 ? (
             <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 text-muted-foreground">
               No saved customizations yet.
@@ -47,7 +47,7 @@ export default function WishlistPage() {
                   key={item.id}
                   className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6"
                 >
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
                     <div>
                       <h2 className="text-xl font-semibold">{item.modelName}</h2>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -64,7 +64,7 @@ export default function WishlistPage() {
                       {formatGBP(getCustomizedUnitPrice(item.modelPrice, item.customization.addOns))}
                     </p>
                   </div>
-                  <div className="mt-4 flex gap-3">
+                  <div className="mt-4 flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={() =>
                         addToCart(

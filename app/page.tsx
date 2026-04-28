@@ -58,7 +58,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="relative pt-40 pb-20 px-4 md:px-6">
+      <main className="relative pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -69,17 +69,17 @@ export default function Home() {
             {/* <p className="inline-flex items-center gap-2 text-xs md:text-sm uppercase tracking-[0.18em] border border-border rounded-full px-4 py-1.5 mb-6 bg-card/70">
               Premium Audio Studio
             </p> */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-playfair font-bold mb-6 leading-[1.02]">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-playfair font-bold mb-5 md:mb-6 leading-[1.06] sm:leading-[1.02]">
               Sound,{' '}
               <span className="text-gold italic">Personalized</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
+            <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 md:mb-10 leading-relaxed">
               Design your perfect headphones with our luxury customization studio.
               Every detail, crafted by you.
             </p>
             <Link
               href="/customize"
-              className="inline-flex items-center gap-3 bg-gold text-dark px-8 py-3.5 rounded-full font-semibold text-base md:text-lg hover:bg-gold/90 transition-all hover:scale-105 group shadow-lg shadow-gold/20"
+              className="inline-flex items-center gap-2.5 md:gap-3 bg-gold text-dark px-6 md:px-8 py-3 md:py-3.5 rounded-full font-semibold text-sm md:text-lg hover:bg-gold/90 transition-all hover:scale-105 group shadow-lg shadow-gold/20"
             >
               Start Creating
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -110,7 +110,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="grid md:grid-cols-3 gap-6 md:gap-8 mt-20 md:mt-24"
+            className="grid md:grid-cols-3 gap-4 md:gap-8 mt-12 md:mt-24"
           >
             <FeatureCard
               icon={<Palette className="w-8 h-8" />}
@@ -178,7 +178,7 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="bg-card/75 backdrop-blur-sm border border-border/80 rounded-3xl p-7 md:p-8 hover:border-gold/50 hover:shadow-xl hover:shadow-gold/10 transition-all group">
+    <div className="bg-card/75 backdrop-blur-sm border border-border/80 rounded-3xl p-5 sm:p-6 md:p-8 hover:border-gold/50 hover:shadow-xl hover:shadow-gold/10 transition-all group">
       <div className="text-gold mb-4 group-hover:scale-110 transition-transform">
         {icon}
       </div>

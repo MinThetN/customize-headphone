@@ -39,10 +39,10 @@ export default function OrdersPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-40 pb-20 px-4 md:px-6">
+      <main className="relative pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8">
           <section className="lg:col-span-2">
-            <h1 className="text-4xl font-playfair font-bold mb-6">Purchased Items</h1>
+            <h1 className="text-3xl sm:text-4xl font-playfair font-bold mb-6">Purchased Items</h1>
             <div className="space-y-4">
               {orders.length === 0 ? (
                 <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 text-muted-foreground">
@@ -54,7 +54,7 @@ export default function OrdersPage() {
                     key={order.id}
                     className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6"
                   >
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
                       <div>
                         <p className="text-sm text-muted-foreground">{order.id}</p>
                         <p className="font-semibold">{new Date(order.createdAt).toLocaleString()}</p>
@@ -89,7 +89,7 @@ export default function OrdersPage() {
             </div>
           </section>
 
-          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 h-fit sticky top-32">
+          <aside className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-5 sm:p-6 h-fit lg:sticky lg:top-32">
             <h2 className="text-xl font-bold mb-4">Your Address</h2>
             <form onSubmit={handleAddressSave} className="space-y-3">
               <input

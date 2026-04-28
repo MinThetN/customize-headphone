@@ -42,10 +42,10 @@ export default function ImageTab() {
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={() => fileInputRef.current?.click()}
-          className="border-2 border-dashed border-border-custom rounded-xl p-12 text-center cursor-pointer hover:border-gold/50 transition-colors bg-surface/20"
+          className="border-2 border-dashed border-border-custom rounded-xl p-6 sm:p-12 text-center cursor-pointer hover:border-gold/50 transition-colors bg-surface/20"
         >
           <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <p className="text-lg font-semibold mb-2">Upload Custom Image</p>
+          <p className="text-base sm:text-lg font-semibold mb-2">Upload Custom Image</p>
           <p className="text-sm text-gray-400 mb-4">
             Drag and drop or click to browse
           </p>
@@ -62,8 +62,8 @@ export default function ImageTab() {
             >
               <X className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-6">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gold/30">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-gold/30">
                 <img
                   src={customization.customImage}
                   alt="Custom"
@@ -71,9 +71,9 @@ export default function ImageTab() {
                 />
               </div>
               <div>
-                <p className="text-lg font-semibold mb-2">Image Uploaded</p>
+                <p className="text-base sm:text-lg font-semibold mb-2">Image Uploaded</p>
                 <p className="text-sm text-gray-400">
-                  This will appear as a circular badge on both ear cups
+                  This will fill both ear cups on your headphone preview
                 </p>
               </div>
             </div>

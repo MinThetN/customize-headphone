@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import { useCart } from '@/hooks/useCart';
 import { getAddOnsTotal, getCustomizedUnitPrice } from '@/lib/pricing';
+import { CartItem } from '@/lib/types';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -32,21 +33,21 @@ export default function CartPage() {
 
       <Header />
 
-      <main className="relative pt-40 pb-20 px-4 md:px-6">
+      <main className="relative pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl font-playfair font-bold mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-bold mb-8 md:mb-12">
               Your <span className="text-gold italic">Cart</span>
             </h1>
 
             {cart.length === 0 ? (
-              <div className="text-center py-20">
+              <div className="text-center py-14 md:py-20">
                 <ShoppingBag className="w-20 h-20 mx-auto mb-6 text-gray-600" />
-                <p className="text-2xl text-muted-foreground mb-8">Your cart is empty</p>
+                <p className="text-xl md:text-2xl text-muted-foreground mb-8">Your cart is empty</p>
                 <Link
                   href="/customize"
                   className="inline-flex items-center gap-2 bg-gold text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold/90 transition-all"
@@ -74,7 +75,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="lg:col-span-1">
-                  <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6 sticky top-32">
+                  <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-5 sm:p-6 lg:sticky lg:top-32">
                     <h2 className="text-2xl font-playfair font-bold mb-6">Summary</h2>
 
                     <div className="space-y-4 mb-6">
@@ -123,26 +124,19 @@ function CartItemCard({
   onUpdateQuantity: (qty: number) => void;
 }) {
   return (
-    <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
-      <div className="flex gap-6">
-        <div className="w-32 h-32 bg-card rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-          <div
-            className="w-20 h-20 rounded-full"
-            style={{ backgroundColor: item.customization.colors.shell }}
-          />
-          <div
-            className="absolute top-4 w-16 h-4 rounded-full"
-            style={{ backgroundColor: item.customization.colors.band }}
-          />
+    <div className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-card rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+          <CartHeadphoneIcon item={item} />
         </div>
 
         <div className="flex-1">
-          <div className="flex justify-between items-start mb-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-3 mb-2">
             <div>
-              <h3 className="text-xl font-playfair font-bold">{item.modelName}</h3>
+              <h3 className="text-lg sm:text-xl font-playfair font-bold">{item.modelName}</h3>
               <p className="text-sm text-muted-foreground">Custom Build</p>
             </div>
-            <p className="text-xl font-bold text-gold">
+            <p className="text-lg sm:text-xl font-bold text-gold">
               {formatGBP(getCustomizedUnitPrice(item.modelPrice, item.customization.addOns))}
             </p>
           </div>
@@ -194,14 +188,14 @@ function CartItemCard({
             {item.customization.addOns?.length > 0 && (
               <div className="flex items-start gap-2">
                 <span className="text-sm text-muted-foreground">Add-ons:</span>
-                <span className="text-sm">
+                <span className="text-sm break-words">
                   {item.customization.addOns.join(', ')} (+{formatGBP(getAddOnsTotal(item.customization.addOns))})
                 </span>
               </div>
             )}
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 bg-background rounded-lg p-1 border">
               <button
                 onClick={() => onUpdateQuantity(item.quantity - 1)}
@@ -229,5 +223,72 @@ function CartItemCard({
         </div>
       </div>
     </div>
+  );
+}
+
+function CartHeadphoneIcon({ item }: { item: CartItem }) {
+  const innerRadius =
+    item.customization.earpieceStyle === 'sport'
+      ? 10
+      : item.customization.earpieceStyle === 'comfort'
+        ? 13
+        : 11;
+  const clipLeftId = `cart-left-${item.id}`;
+  const clipRightId = `cart-right-${item.id}`;
+
+  return (
+    <svg
+      viewBox="0 0 120 90"
+      className="w-full h-full p-2.5"
+      role="img"
+      aria-label="Customized headphone preview"
+    >
+      <defs>
+        <clipPath id={clipLeftId}>
+          <circle cx="34" cy="62" r={innerRadius - 0.6} />
+        </clipPath>
+        <clipPath id={clipRightId}>
+          <circle cx="86" cy="62" r={innerRadius - 0.6} />
+        </clipPath>
+      </defs>
+
+      <path
+        d="M20,38 C36,14 84,14 100,38"
+        fill="none"
+        stroke={item.customization.colors.band}
+        strokeWidth="8"
+        strokeLinecap="round"
+      />
+      <rect x="26" y="38" width="4" height="16" rx="2" fill={item.customization.colors.shell} />
+      <rect x="90" y="38" width="4" height="16" rx="2" fill={item.customization.colors.shell} />
+
+      <circle cx="34" cy="62" r="15" fill={item.customization.colors.earCups} />
+      <circle cx="86" cy="62" r="15" fill={item.customization.colors.earCups} />
+      <circle cx="34" cy="62" r={innerRadius} fill="#0b0b0b" />
+      <circle cx="86" cy="62" r={innerRadius} fill="#0b0b0b" />
+
+      {item.customization.customImage && (
+        <>
+          <image
+            href={item.customization.customImage}
+            x="22"
+            y="50"
+            width="24"
+            height="24"
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#${clipLeftId})`}
+          />
+          <image
+            href={item.customization.customImage}
+            x="74"
+            y="50"
+            width="24"
+            height="24"
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#${clipRightId})`}
+          />
+        </>
+      )}
+    </svg>
   );
 }

@@ -34,7 +34,7 @@ export default function CustomizePage() {
 
       <Header />
 
-      <main className="relative pt-36 pb-10 px-4 md:px-6">
+      <main className="relative pt-32 md:pt-36 pb-10 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -45,7 +45,7 @@ export default function CustomizePage() {
             {/* <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-4">
               Choose Your <span className="text-gold italic">Canvas</span>
             </h1> */}
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Choose your model level: Base includes essential customization, Premium unlocks full creative control.
             </p>
             <p className="mt-3 text-sm text-gold/90 font-medium">
@@ -53,7 +53,7 @@ export default function CustomizePage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-5 md:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -130,7 +130,7 @@ function ModelCard({
 }) {
   return (
     <Link href={`/customize/${model.id}`}>
-      <div className="group relative bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-8 hover:border-gold/50 transition-all overflow-hidden h-full">
+      <div className="group relative bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-5 sm:p-6 md:p-8 hover:border-gold/50 transition-all overflow-hidden h-full">
         <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
         <div className="relative z-10">
@@ -142,14 +142,14 @@ function ModelCard({
               <img
                 src={imageSrc}
                 alt={displayName}
-                className="w-48 h-48 rounded-2xl object-cover border border-white/10"
+                className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-2xl object-cover border border-white/10"
               />
             ) : (
-              <div className="w-48 h-48 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900" />
+              <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900" />
             )}
           </div>
 
-          <h2 className="text-2xl font-playfair font-bold mb-2">{displayName}</h2>
+          <h2 className="text-xl sm:text-2xl font-playfair font-bold mb-2">{displayName}</h2>
           <p className="text-muted-foreground">{description}</p>
           <p className="text-muted-foreground mb-4 min-h-[3rem]">
             {extraNote ?? model.tagline}
@@ -163,7 +163,7 @@ function ModelCard({
           ) : null}
 
           <div className="flex items-center justify-between mb-6">
-            <span className="text-3xl font-bold text-gold">
+            <span className="text-2xl sm:text-3xl font-bold text-gold">
               {formatGBP(price)}
             </span>
             {showColorShowcase ? (

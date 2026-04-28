@@ -55,7 +55,7 @@ function ColorSection({
         />
       </div>
 
-      <div className="grid grid-cols-8 gap-2 mb-3">
+      <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 mb-3">
         {colors.map((color) => (
           <motion.button
             key={color}
