@@ -5,6 +5,7 @@ import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { useCart } from '@/hooks/useCart';
+import { getAddOnsTotal, getCustomizedUnitPrice } from '@/lib/pricing';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -31,7 +32,7 @@ export default function CartPage() {
 
       <Header />
 
-      <main className="relative pt-48 pb-20 px-4 md:px-6">
+      <main className="relative pt-40 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -142,7 +143,7 @@ function CartItemCard({
               <p className="text-sm text-muted-foreground">Custom Build</p>
             </div>
             <p className="text-xl font-bold text-gold">
-              {formatGBP(item.modelPrice)}
+              {formatGBP(getCustomizedUnitPrice(item.modelPrice, item.customization.addOns))}
             </p>
           </div>
 
@@ -193,7 +194,9 @@ function CartItemCard({
             {item.customization.addOns?.length > 0 && (
               <div className="flex items-start gap-2">
                 <span className="text-sm text-muted-foreground">Add-ons:</span>
-                <span className="text-sm">{item.customization.addOns.join(', ')}</span>
+                <span className="text-sm">
+                  {item.customization.addOns.join(', ')} (+{formatGBP(getAddOnsTotal(item.customization.addOns))})
+                </span>
               </div>
             )}
           </div>

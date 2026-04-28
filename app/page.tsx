@@ -5,7 +5,52 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Palette, Type } from 'lucide-react';
 import Header from '@/components/Header';
 
+const showcaseImages = [
+  {
+    src: '/showcase/showcase-01.webp',
+    alt: 'Headphone showcase design 01',
+  },
+  {
+    src: '/showcase/showcase-02.jpg',
+    alt: 'Headphone showcase design 02',
+  },
+  {
+    src: '/showcase/showcase-03.jpg',
+    alt: 'Headphone showcase design 03',
+  },
+  {
+    src: '/showcase/showcase-04.jpg',
+    alt: 'Headphone showcase design 04',
+  },
+  {
+    src: '/showcase/showcase-05.jpg',
+    alt: 'Headphone showcase design 05',
+  },
+  {
+    src: '/showcase/showcase-06.jpg',
+    alt: 'Headphone showcase design 06',
+  },
+  {
+    src: '/showcase/showcase-07.jpg',
+    alt: 'Headphone showcase design 07',
+  },
+  {
+    src: '/showcase/showcase-08.jpg',
+    alt: 'Headphone showcase design 08',
+  },
+  {
+    src: '/showcase/showcase-09.jpg',
+    alt: 'Headphone showcase design 09',
+  },
+  {
+    src: '/showcase/showcase-10.jpg',
+    alt: 'Headphone showcase design 10',
+  },
+];
+
 export default function Home() {
+  const scrollingImages = [...showcaseImages, ...showcaseImages];
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
@@ -13,7 +58,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="relative pt-48 pb-20 px-4 md:px-6">
+      <main className="relative pt-40 pb-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -39,6 +84,26 @@ export default function Home() {
               Start Creating
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
+
+            <div className="mt-10 md:mt-12">
+              <p className="text-xs md:text-sm uppercase tracking-[0.16em] text-muted-foreground mb-4">
+                Design Showcase
+              </p>
+              <div className="showcase-mask rounded-2xl border border-border/80 bg-card/70 p-3">
+                <div className="showcase-track">
+                  {scrollingImages.map((image, index) => (
+                    <div key={`${image.src}-${index}`} className="showcase-item">
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
@@ -65,6 +130,40 @@ export default function Home() {
           </motion.div>
         </div>
       </main>
+      <style jsx>{`
+        .showcase-mask {
+          overflow: hidden;
+        }
+        .showcase-track {
+          display: flex;
+          width: max-content;
+          gap: 0.75rem;
+          animation: move-left-to-right 28s linear infinite;
+          transform: translateX(-50%);
+        }
+        .showcase-item {
+          width: 180px;
+          height: 120px;
+          border-radius: 0.9rem;
+          overflow: hidden;
+          border: 1px solid hsl(var(--border));
+          flex: 0 0 auto;
+        }
+        @media (min-width: 768px) {
+          .showcase-item {
+            width: 220px;
+            height: 140px;
+          }
+        }
+        @keyframes move-left-to-right {
+          from {
+            transform: translateX(-50%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -7,6 +7,19 @@ type Angle = 'front' | 'left' | 'right';
 
 export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle }) {
   const { customization } = useCustomization();
+  const frontLeftInnerRadius = 60;
+  const frontRightInnerRadius =
+    customization.earpieceStyle === 'sport'
+      ? 54
+      : customization.earpieceStyle === 'comfort'
+        ? 66
+        : 60;
+  const sideInnerRadius =
+    customization.earpieceStyle === 'sport'
+      ? 58
+      : customization.earpieceStyle === 'comfort'
+        ? 70
+        : 65;
   const patternOpacity =
     customization.pattern === 'solid'
       ? 0
@@ -37,6 +50,18 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
           <pattern id="gridPattern" width="10" height="10" patternUnits="userSpaceOnUse">
             <path d="M10 0 L0 0 0 10" stroke="white" strokeWidth="1" fill="none" />
           </pattern>
+          <clipPath id="frontLeftImageClip">
+            <circle cx="180" cy="360" r={frontLeftInnerRadius - 2} />
+          </clipPath>
+          <clipPath id="frontRightImageClip">
+            <circle cx="420" cy="360" r={frontRightInnerRadius - 2} />
+          </clipPath>
+          <clipPath id="sideLeftImageClip">
+            <circle cx="260" cy="370" r={sideInnerRadius - 2} />
+          </clipPath>
+          <clipPath id="sideRightImageClip">
+            <circle cx="340" cy="370" r={sideInnerRadius - 2} />
+          </clipPath>
         </defs>
 
         {angle === 'front' && (
@@ -62,7 +87,7 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
             </g>
             <g>
               <circle cx="180" cy="360" r="85" fill={customization.colors.earCups} />
-              <circle cx="180" cy="360" r="60" fill="#0b0b0b" />
+              <circle cx="180" cy="360" r={frontLeftInnerRadius} fill="#0b0b0b" />
               <circle cx="180" cy="360" r="85" fill="url(#cupShade)" />
               {customization.pattern !== 'solid' && (
                 <circle
@@ -79,7 +104,7 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
               <circle
                 cx="420"
                 cy="360"
-                r={customization.earpieceStyle === 'sport' ? 54 : customization.earpieceStyle === 'comfort' ? 66 : 60}
+                r={frontRightInnerRadius}
                 fill="#0b0b0b"
               />
               <circle cx="420" cy="360" r="85" fill="url(#cupShade)" />
@@ -95,40 +120,40 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
             </g>
             {customization.customImage && (
               <>
-                <foreignObject x="120" y="300" width="120" height="120">
-                  <div
-                    style={{
-                      width: '105px',
-                      height: '105px',
-                      borderRadius: '9999px',
-                      overflow: 'hidden',
-                      border: '4px solid rgba(212,175,55,0.5)',
-                    }}
-                  >
-                    <img
-                      src={customization.customImage}
-                      alt=""
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </div>
-                </foreignObject>
-                <foreignObject x="360" y="300" width="120" height="120">
-                  <div
-                    style={{
-                      width: '105px',
-                      height: '105px',
-                      borderRadius: '9999px',
-                      overflow: 'hidden',
-                      border: '4px solid rgba(212,175,55,0.5)',
-                    }}
-                  >
-                    <img
-                      src={customization.customImage}
-                      alt=""
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </div>
-                </foreignObject>
+                <image
+                  href={customization.customImage}
+                  x="120"
+                  y="300"
+                  width="120"
+                  height="120"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#frontLeftImageClip)"
+                />
+                <image
+                  href={customization.customImage}
+                  x="360"
+                  y="300"
+                  width="120"
+                  height="120"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#frontRightImageClip)"
+                />
+                <circle
+                  cx="180"
+                  cy="360"
+                  r={frontLeftInnerRadius - 2}
+                  fill="none"
+                  stroke="rgba(212,175,55,0.55)"
+                  strokeWidth="3"
+                />
+                <circle
+                  cx="420"
+                  cy="360"
+                  r={frontRightInnerRadius - 2}
+                  fill="none"
+                  stroke="rgba(212,175,55,0.55)"
+                  strokeWidth="3"
+                />
               </>
             )}
             {customization.stickers.length > 0 && (
@@ -176,63 +201,57 @@ export default function HeadphonePreview({ angle = 'front' }: { angle?: Angle })
                 <>
                   <rect x="210" y="200" width="20" height="150" rx="8" fill={customization.colors.shell} />
                   <circle cx="260" cy="370" r="90" fill={customization.colors.earCups} />
-                  <circle
-                    cx="260"
-                    cy="370"
-                    r={customization.earpieceStyle === 'sport' ? 58 : customization.earpieceStyle === 'comfort' ? 70 : 65}
-                    fill="#0b0b0b"
-                  />
+                  <circle cx="260" cy="370" r={sideInnerRadius} fill="#0b0b0b" />
                 </>
               ) : (
                 <>
                   <rect x="370" y="200" width="20" height="150" rx="8" fill={customization.colors.shell} />
                   <circle cx="340" cy="370" r="90" fill={customization.colors.earCups} />
-                  <circle
-                    cx="340"
-                    cy="370"
-                    r={customization.earpieceStyle === 'sport' ? 58 : customization.earpieceStyle === 'comfort' ? 70 : 65}
-                    fill="#0b0b0b"
-                  />
+                  <circle cx="340" cy="370" r={sideInnerRadius} fill="#0b0b0b" />
                 </>
               )}
             </g>
             {customization.customImage && angle === 'right' && (
-              <foreignObject x="300" y="320" width="120" height="120">
-                <div
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '9999px',
-                    overflow: 'hidden',
-                    border: '4px solid rgba(212,175,55,0.5)',
-                  }}
-                >
-                  <img
-                    src={customization.customImage}
-                    alt=""
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              </foreignObject>
+              <>
+                <image
+                  href={customization.customImage}
+                  x="274"
+                  y="304"
+                  width="132"
+                  height="132"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#sideRightImageClip)"
+                />
+                <circle
+                  cx="340"
+                  cy="370"
+                  r={sideInnerRadius - 2}
+                  fill="none"
+                  stroke="rgba(212,175,55,0.55)"
+                  strokeWidth="3"
+                />
+              </>
             )}
             {customization.customImage && angle === 'left' && (
-              <foreignObject x="210" y="320" width="120" height="120">
-                <div
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '9999px',
-                    overflow: 'hidden',
-                    border: '4px solid rgba(212,175,55,0.5)',
-                  }}
-                >
-                  <img
-                    src={customization.customImage}
-                    alt=""
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              </foreignObject>
+              <>
+                <image
+                  href={customization.customImage}
+                  x="194"
+                  y="304"
+                  width="132"
+                  height="132"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#sideLeftImageClip)"
+                />
+                <circle
+                  cx="260"
+                  cy="370"
+                  r={sideInnerRadius - 2}
+                  fill="none"
+                  stroke="rgba(212,175,55,0.55)"
+                  strokeWidth="3"
+                />
+              </>
             )}
             {customization.stickers.length > 0 && (
               <g>

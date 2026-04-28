@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { CartItem, CustomizationState } from '@/lib/types';
+import { getCustomizedUnitPrice } from '@/lib/pricing';
 
 const CART_STORAGE_KEY = 'sonic-cart';
 
@@ -61,7 +62,8 @@ export function useCart() {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce(
-    (sum, item) => sum + item.modelPrice * item.quantity,
+    (sum, item) =>
+      sum + getCustomizedUnitPrice(item.modelPrice, item.customization.addOns) * item.quantity,
     0
   );
 

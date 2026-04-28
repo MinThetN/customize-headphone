@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ShoppingBag, Heart } from 'lucide-react';
@@ -13,11 +13,15 @@ import TextTab from '@/components/tabs/TextTab';
 import ImageTab from '@/components/tabs/ImageTab';
 import { CustomizationProvider, useCustomization } from '@/contexts/CustomizationContext';
 import { getModelById, HeadphoneModel } from '@/lib/models';
+import { ADD_ON_OPTIONS, getAddOnsTotal } from '@/lib/pricing';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
+import { CustomizationState } from '@/lib/types';
 
-const tabs = [
+type TabId = 'color' | 'stickers' | 'text' | 'image';
+
+const allTabs: Array<{ id: TabId; label: string; component: typeof ColorTab }> = [
   { id: 'color', label: 'Color', component: ColorTab },
   { id: 'stickers', label: 'Stickers', component: StickersTab },
   { id: 'text', label: 'Text', component: TextTab },
@@ -31,13 +35,6 @@ const gbpFormatter = new Intl.NumberFormat('en-GB', {
 });
 
 const formatGBP = (price: number) => gbpFormatter.format(price);
-
-const addOnOptions = [
-  'Custom earpieces',
-  'Music player',
-  '2-year after-sales care',
-  'Repair service',
-];
 
 const patternOptions = [
   { id: 'solid', label: 'Solid' },
@@ -73,7 +70,8 @@ function CustomizeContent({
 }: {
   model: HeadphoneModel;
 }) {
-  const [activeTab, setActiveTab] = useState('color');
+  const allowedTabs = allTabs.filter((tab) => model.customization.tabs.includes(tab.id));
+  const [activeTab, setActiveTab] = useState(allowedTabs[0]?.id ?? 'color');
   const [angle, setAngle] = useState<'front' | 'left' | 'right'>('front');
   const router = useRouter();
   const {
@@ -90,10 +88,22 @@ function CustomizeContent({
 
   if (!model) return null;
 
-  const ActiveComponent = tabs.find(t => t.id === activeTab)?.component || ColorTab;
+  useEffect(() => {
+    if (!allowedTabs.some((tab) => tab.id === activeTab)) {
+      setActiveTab(allowedTabs[0]?.id ?? 'color');
+    }
+  }, [activeTab, allowedTabs]);
+
+  const ActiveComponent = allowedTabs.find(t => t.id === activeTab)?.component || ColorTab;
+  const filteredAddOnOptions = ADD_ON_OPTIONS.filter((option) =>
+    model.customization.addOns.includes(option.name)
+  );
+  const addOnFees = getAddOnsTotal(customization.addOns);
+  const customizedPrice = model.price + addOnFees;
 
   const handleAddToCart = () => {
-    addToCart(model.id, model.name, model.price, customization);
+    const sanitizedCustomization = sanitizeCustomizationForModel(customization, model);
+    addToCart(model.id, model.name, model.price, sanitizedCustomization);
     router.push('/cart');
   };
 
@@ -102,7 +112,8 @@ function CustomizeContent({
       router.push('/auth?redirect=/wishlist');
       return;
     }
-    saveForLater(model.id, model.name, model.price, customization);
+    const sanitizedCustomization = sanitizeCustomizationForModel(customization, model);
+    saveForLater(model.id, model.name, model.price, sanitizedCustomization);
     router.push('/wishlist');
   };
   const handleReset = () => {
@@ -121,7 +132,7 @@ function CustomizeContent({
 
       <Header />
 
-      <div className="pt-44 px-4 md:px-6 pb-10">
+      <div className="pt-36 px-4 md:px-6 pb-10">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors mb-6"
@@ -195,7 +206,7 @@ function CustomizeContent({
             </div>
 
             <div className="flex gap-2 mb-4 border-b border-border-custom pb-3">
-              {tabs.map((tab) => (
+              {allowedTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
@@ -225,24 +236,26 @@ function CustomizeContent({
               </AnimatePresence>
             </div>
 
-            {addOnOptions.length > 0 ? (
+            {filteredAddOnOptions.length > 0 ? (
               <div className="mt-4 pt-4 border-t border-border-custom">
                 <h2 className="font-semibold mb-3">Add-on Options</h2>
                 <div className="space-y-2">
-                  {addOnOptions.map((option) => {
-                    const selected = customization.addOns.includes(option);
+                  {filteredAddOnOptions.map((option) => {
+                    const selected = customization.addOns.includes(option.name);
                     return (
                       <label
-                        key={option}
+                        key={option.name}
                         className={`flex items-center justify-between rounded-xl border px-3 py-2 cursor-pointer transition-colors ${
                           selected ? 'border-gold bg-gold/10' : 'border'
                         }`}
                       >
-                        <span className="text-sm">{option}</span>
+                        <span className="text-sm">
+                          {option.name} (+{formatGBP(option.fee)})
+                        </span>
                         <input
                           type="checkbox"
                           checked={selected}
-                          onChange={() => toggleAddOn(option)}
+                          onChange={() => toggleAddOn(option.name)}
                           className="accent-cyan-500"
                         />
                       </label>
@@ -252,43 +265,47 @@ function CustomizeContent({
               </div>
             ) : null}
 
-            <div className="mt-4 pt-4 border-t border-border-custom">
-              <h2 className="font-semibold mb-3">Pattern</h2>
-              <div className="grid grid-cols-2 gap-2">
-                {patternOptions.map((pattern) => (
-                  <button
-                    key={pattern.id}
-                    onClick={() => updatePattern(pattern.id)}
-                    className={`rounded-xl border px-3 py-2 text-sm text-left ${
-                      customization.pattern === pattern.id
-                        ? 'border-gold bg-gold/10'
-                        : 'border hover:border-gold/40'
-                    }`}
-                  >
-                    {pattern.label}
-                  </button>
-                ))}
+            {model.customization.allowPattern ? (
+              <div className="mt-4 pt-4 border-t border-border-custom">
+                <h2 className="font-semibold mb-3">Pattern</h2>
+                <div className="grid grid-cols-2 gap-2">
+                  {patternOptions.map((pattern) => (
+                    <button
+                      key={pattern.id}
+                      onClick={() => updatePattern(pattern.id)}
+                      className={`rounded-xl border px-3 py-2 text-sm text-left ${
+                        customization.pattern === pattern.id
+                          ? 'border-gold bg-gold/10'
+                          : 'border hover:border-gold/40'
+                      }`}
+                    >
+                      {pattern.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
 
-            <div className="mt-4 pt-4 border-t border-border-custom">
-              <h2 className="font-semibold mb-3">Earpiece Style</h2>
-              <div className="grid grid-cols-3 gap-2">
-                {earpieceStyles.map((style) => (
-                  <button
-                    key={style.id}
-                    onClick={() => updateEarpieceStyle(style.id)}
-                    className={`rounded-xl border px-3 py-2 text-sm ${
-                      customization.earpieceStyle === style.id
-                        ? 'border-gold bg-gold/10'
-                        : 'border hover:border-gold/40'
-                    }`}
-                  >
-                    {style.label}
-                  </button>
-                ))}
+            {model.customization.allowEarpieceStyle ? (
+              <div className="mt-4 pt-4 border-t border-border-custom">
+                <h2 className="font-semibold mb-3">Earpiece Style</h2>
+                <div className="grid grid-cols-3 gap-2">
+                  {earpieceStyles.map((style) => (
+                    <button
+                      key={style.id}
+                      onClick={() => updateEarpieceStyle(style.id)}
+                      className={`rounded-xl border px-3 py-2 text-sm ${
+                        customization.earpieceStyle === style.id
+                          ? 'border-gold bg-gold/10'
+                          : 'border hover:border-gold/40'
+                      }`}
+                    >
+                      {style.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <div className="mt-4 pt-4 border-t border-border-custom">
               <button
@@ -303,12 +320,36 @@ function CustomizeContent({
                 className="w-full bg-gold text-dark px-5 py-3 rounded-xl font-bold text-base hover:bg-gold/90 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-5 h-5" />
-                Add to Cart - {formatGBP(model.price)}
+                Add to Cart - {formatGBP(customizedPrice)}
               </button>
+              {addOnFees > 0 ? (
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  Includes add-on fees: {formatGBP(addOnFees)}
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function sanitizeCustomizationForModel(
+  customization: CustomizationState,
+  model: HeadphoneModel
+): CustomizationState {
+  const allows = model.customization;
+
+  return {
+    ...customization,
+    stickers: allows.tabs.includes('stickers') ? customization.stickers : [],
+    text: allows.tabs.includes('text')
+      ? customization.text
+      : { content: '', font: 'font-sans', color: '#f5a623' },
+    customImage: allows.tabs.includes('image') ? customization.customImage : null,
+    addOns: customization.addOns.filter((addOn) => allows.addOns.includes(addOn)),
+    pattern: allows.allowPattern ? customization.pattern : 'solid',
+    earpieceStyle: allows.allowEarpieceStyle ? customization.earpieceStyle : 'standard',
+  };
 }

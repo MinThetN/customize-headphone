@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { getCustomizedUnitPrice } from '@/lib/pricing';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -32,7 +33,7 @@ export default function WishlistPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-48 pb-20 px-4 md:px-6">
+      <main className="relative pt-40 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl font-playfair font-bold mb-6">Wishlist / Save For Later</h1>
           {wishlist.length === 0 ? (
@@ -60,7 +61,7 @@ export default function WishlistPage() {
                       ) : null}
                     </div>
                     <p className="text-xl font-bold text-gold">
-                      {formatGBP(item.modelPrice)}
+                      {formatGBP(getCustomizedUnitPrice(item.modelPrice, item.customization.addOns))}
                     </p>
                   </div>
                   <div className="mt-4 flex gap-3">

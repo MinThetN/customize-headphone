@@ -29,7 +29,7 @@ export default function Header() {
           PREMIUM CUSTOM AUDIO STUDIO • FREE SHIPPING ABOVE $150
         </div>
       </div> */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-2.5 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-2">
         <Link href="/" className="flex items-center gap-2.5 group shrink-0">
           <span className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-card">
             <Headphones className="w-5 h-5 text-gold" />
@@ -91,7 +91,7 @@ export default function Header() {
         </div>
       </div>
 
-      <nav className="lg:hidden max-w-7xl mx-auto px-4 md:px-6 py-2.5 flex items-center justify-center flex-wrap gap-2 md:gap-3">
+      <nav className="lg:hidden max-w-7xl mx-auto px-4 md:px-6 py-1.5 flex items-center justify-center flex-wrap gap-2 md:gap-3">
         {navLinks.map((link) => (
           <Link
             key={link.href}

@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useOrders } from '@/hooks/useOrders';
+import { getAddOnsTotal, getCustomizedUnitPrice } from '@/lib/pricing';
 
 const gbpFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -79,7 +80,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-grain opacity-50 pointer-events-none" />
       <Header />
-      <main className="relative pt-48 pb-20 px-4 md:px-6">
+      <main className="relative pt-40 pb-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto grid lg:grid-cols-3 gap-8">
           <form onSubmit={handlePlaceOrder} className="lg:col-span-2 space-y-6">
             <section className="bg-card/80 backdrop-blur-sm border border-border/80 rounded-3xl shadow-sm p-6">
@@ -245,11 +246,17 @@ export default function CheckoutPage() {
                     <span>
                       {item.modelName} x {item.quantity}
                     </span>
-                    <span>{formatGBP(item.modelPrice * item.quantity)}</span>
+                    <span>
+                      {formatGBP(
+                        getCustomizedUnitPrice(item.modelPrice, item.customization.addOns) *
+                          item.quantity
+                      )}
+                    </span>
                   </div>
                   {item.customization.addOns?.length > 0 ? (
                     <p className="text-xs text-muted-foreground mt-1">
-                      Add-ons: {item.customization.addOns.join(', ')}
+                      Add-ons: {item.customization.addOns.join(', ')} (+
+                      {formatGBP(getAddOnsTotal(item.customization.addOns))} each)
                     </p>
                   ) : null}
                 </div>

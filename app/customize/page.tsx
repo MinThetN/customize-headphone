@@ -34,7 +34,7 @@ export default function CustomizePage() {
 
       <Header />
 
-      <main className="relative pt-44 pb-10 px-4 md:px-6">
+      <main className="relative pt-36 pb-10 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export default function CustomizePage() {
               Choose Your <span className="text-gold italic">Canvas</span>
             </h1> */}
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Two product listings with high-quality photos and full customization.
+              Choose your model level: Base includes essential customization, Premium unlocks full creative control.
             </p>
             <p className="mt-3 text-sm text-gold/90 font-medium">
               Student discount 10% applies to all headphones.
@@ -66,9 +66,9 @@ export default function CustomizePage() {
                 displayName="Base model"
                 description="Customisable wireless headphones"
                 features={[
-                  'Studio-grade drivers with low-latency wireless performance',
-                  'Custom design builder: colours, patterns and earpiece style',
-                  'Supports add-ons including custom earpieces and music player',
+                  'Essential customization: shell, band and ear-cup colors',
+                  'Personal text engraving support',
+                  'All add-ons available: custom earpieces, music player, care and repair',
                 ]}
                 price={129}
                 imageSrc={modelImages[baseModel.id]}
@@ -89,9 +89,9 @@ export default function CustomizePage() {
                 description="Customisable wireless headphones"
                 extraNote="Premium support for long-term product care"
                 features={[
-                  'Enhanced sound profile and premium acoustic isolation',
-                  'Add-on selector includes after-sales care and repair services',
-                  'Built for long use with detailed finish and luxury packaging',
+                  'Full customization tabs: colors, stickers, text and image upload',
+                  'Advanced controls: pattern and earpiece style selection',
+                  'All add-ons available: custom earpieces, music player, care and repair',
                 ]}
                 price={159}
                 imageSrc={modelImages[premiumModel.id]}
